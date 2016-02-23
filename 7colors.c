@@ -8,7 +8,7 @@
 
 
 /* We want a 30x30 board game by default */
-#define BOARD_SIZE 30 
+#define BOARD_SIZE 10 
 #define NB_COLORS 7
 #define color1 -3
 #define color2 64-97
@@ -88,7 +88,7 @@ void set_random_board() {
 
 char alea () {
   char r =  rand() % 7;
-  printf("Couleur choisie par l'IA de merde : %c\n\n\n\n\n", r+97);
+  printf("Color chose by random AI : %c\n\n\n\n\n", r+97);
   //getchar();
   return r;
 }
@@ -97,20 +97,22 @@ char alea () {
 
 char alea_useful_colors(int player) {
   //chooses at random between colors that can make any progress
+  printf("%d\n", player);
   int useful[NB_COLORS] = {0};
   int i,j;
   char color;
   int c;
+  
   for (i = 0; i< BOARD_SIZE; i++) {
     for (j = 0; j< BOARD_SIZE; j++) {
       color = get_cell(i,j);
       if (color>=0 && color < BOARD_SIZE) {
 	c = (int) color;
 	if (useful[c]==0) {
-	  if (in_board(i-1,j)) {if (get_cell(i-1,j) == player)  {useful[c] = 1;}}
-	  if (in_board(i+1,j)) {if (get_cell(i+1,j) == player)  {useful[c] = 1;}}
-	  if (in_board(i,j-1)) {if (get_cell(i,j-1) == player)  {useful[c] = 1;}}
-	  if (in_board(i,j+1)) {if (get_cell(i,j+1) == player)  {useful[c] = 1;}}
+	  if (in_board(i-1,j)) {if (get_cell(i-1,j) == player)  {useful[c] = 1;printf("%d,%d,%d\n",i,j,c);}}
+	  if (in_board(i+1,j)) {if (get_cell(i+1,j) == player)  {useful[c] = 1;printf("%d,%d,%d\n",i,j,c);}}
+	  if (in_board(i,j-1)) {if (get_cell(i,j-1) == player)  {useful[c] = 1;printf("%d,%d,%d\n",i,j,c);}}
+	  if (in_board(i,j+1)) {if (get_cell(i,j+1) == player)  {useful[c] = 1;printf("%d,%d,%d\n",i,j,c);}}
 	}
       }
     }
@@ -119,20 +121,26 @@ char alea_useful_colors(int player) {
   for (i = 0; i< NB_COLORS; i++) {
     if (useful[i]) {sum++;}
   }
-  char r =  rand() % sum;
+  int r =  rand() % sum;
+  printf("%d\n", r);
+  for (i=0; i< NB_COLORS; i++) {
+    printf("%d  ", useful[i]);
+  }
 
   for (i = 0; i< NB_COLORS; i++) {
-    if (!r) {break;}
     if (useful[i]) {r--;}
+    if (!r==-1) {break;}
+
   }
   
+  printf("\nColor chose by random_useful AI : %c\n", i+97);
   return (char) i;
 }
 
 
 char player_choice(int p) {
   char c;
-  print_board();
+  //print_board();
   //printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
   printf("What color do you choose, player %d?\n", p);
   printf("Must be between a-g  \n");
@@ -163,13 +171,16 @@ int main()
      
      printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
      print_board();
-     if (player) {choice =alea();}
-     else {choice = alea();}
+     if (player) {choice =alea_useful_colors(color2);}
+     else {choice = player_choice(player);}
      if (player) {update_board(color2, choice, &score2);}
      else {update_board(color1, choice, &score1);}
      player = 1-player;
        
    }
+   print_board();
+   printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
+
 
    return 0; // Everything went well
 }
