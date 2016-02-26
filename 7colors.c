@@ -8,7 +8,7 @@
 
 
 /* We want a 30x30 board game by default */
-#define BOARD_SIZE 10 
+#define BOARD_SIZE 50 
 #define NB_COLORS 7
 #define color1 -3
 #define color2 64-97
@@ -20,18 +20,19 @@
  *  an appropriate data structure would also be preferred), but don't worry. 
  *  For this first assignment, no dinosaure will get you if you do that. 
  */
-char board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // Filled with zeros
+char      board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // Filled with zeros
+char test_board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // to test things in our AI
 
 /** Retrieves the color of a given board cell */
-char get_cell(int x, int y) 
+char get_cell(int x, int y, char * b) 
 {
-   return board[y*BOARD_SIZE + x];
+   return b[y*BOARD_SIZE + x];
 }
 
 /** Changes the color of a given board cell */
-void set_cell(int x, int y, char color) 
+void set_cell(int x, int y, char color, char * b) 
 {
-   board[y*BOARD_SIZE + x] = color;
+   b[y*BOARD_SIZE + x] = color;
 }
    
 /** Prints the current state of the board on screen
@@ -44,7 +45,7 @@ void print_board()
    int i, j;
    for (i=0; i<BOARD_SIZE; i++) {
       for (j=0; j<BOARD_SIZE; j++) 
-	 printf("%c ", get_cell(i, j)+97);
+	printf("%c ", get_cell(i, j, board)+97);
       printf("\n");
    }
 }
@@ -56,20 +57,20 @@ int in_board(int x, int y) {
 }
 
 
-void update_board(char player, char color, int* score) {
+void update_board(char player, char color, char * b) {
   int i,j;
   int change = 0;
   for (i=0; i<BOARD_SIZE; i++) {
     for (j=0; j<BOARD_SIZE; j++) {
-      if (get_cell(i,j) == color) {
-	if (in_board(i-1,j)) {if (get_cell(i-1,j) == player) {set_cell(i,j,player); change = 1; *score += 1;}}
-	if (in_board(i+1,j)) {if (get_cell(i+1,j) == player) {set_cell(i,j,player); change = 1; *score += 1;}}
-	if (in_board(i,j-1)) {if (get_cell(i,j-1) == player) {set_cell(i,j,player); change = 1; *score += 1;}}
-	if (in_board(i,j+1)) {if (get_cell(i,j+1) == player) {set_cell(i,j,player); change = 1; *score += 1;}}
+      if (get_cell(i,j,board) == color) {
+	if (in_board(i-1,j)) {if (get_cell(i-1,j,board) == player) {set_cell(i,j,player,b); change = 1;}}
+	if (in_board(i+1,j)) {if (get_cell(i+1,j,board) == player) {set_cell(i,j,player,b); change = 1;}}
+	if (in_board(i,j-1)) {if (get_cell(i,j-1,board) == player) {set_cell(i,j,player,b); change = 1;}}
+	if (in_board(i,j+1)) {if (get_cell(i,j+1,board) == player) {set_cell(i,j,player,b); change = 1;}}
       }
     }
   }
-  if (change) {update_board(player, color, score );}	
+  if (change) {update_board(player, color, board );}	
 }
 
 void set_random_board() {
@@ -78,13 +79,35 @@ void set_random_board() {
   //RAND_MAX = NB_COLORS;
   for (i = 0; i< BOARD_SIZE; i++){
     for (j=0; j < BOARD_SIZE; j++) {
-      r = rand() % 7;
-      set_cell(i,j,r);
+      r = rand() % NB_COLORS;
+      set_cell(i,j,r,board);
     }
   }
-  set_cell(0,BOARD_SIZE-1, color1);
-  set_cell(BOARD_SIZE-1,0, color2);
+  set_cell(0,BOARD_SIZE-1, color1,board);
+  set_cell(BOARD_SIZE-1,0, color2,board);
 }
+
+void set_sym_board() {
+  int i, j;
+  int r = 0;
+  //RAND_MAX = NB_COLORS;
+  //first half
+  for (i = 0; i< BOARD_SIZE; i++){
+    for (j=i; j < BOARD_SIZE; j++) {
+      r = rand() % NB_COLORS;
+      set_cell(i,j,r,board);
+    }
+  }
+  //second half
+  for (i = 0; i<BOARD_SIZE; i++) {
+    for (j = 0; j<i; j++) {
+      set_cell(i,j,get_cell(j,i,board),board);
+    }
+  }
+  set_cell(0,BOARD_SIZE-1, color1,board);
+  set_cell(BOARD_SIZE-1,0, color2,board);
+}
+
 
 char alea () {
   char r =  rand() % 7;
@@ -97,7 +120,6 @@ char alea () {
 
 char alea_useful_colors(int player) {
   //chooses at random between colors that can make any progress
-  printf("%d\n", player);
   int useful[NB_COLORS] = {0};
   int i,j;
   char color;
@@ -105,14 +127,14 @@ char alea_useful_colors(int player) {
   
   for (i = 0; i< BOARD_SIZE; i++) {
     for (j = 0; j< BOARD_SIZE; j++) {
-      color = get_cell(i,j);
+      color = get_cell(i,j,board);
       if (color>=0 && color < BOARD_SIZE) {
 	c = (int) color;
 	if (useful[c]==0) {
-	  if (in_board(i-1,j)) {if (get_cell(i-1,j) == player)  {useful[c] = 1;printf("%d,%d,%d\n",i,j,c);}}
-	  if (in_board(i+1,j)) {if (get_cell(i+1,j) == player)  {useful[c] = 1;printf("%d,%d,%d\n",i,j,c);}}
-	  if (in_board(i,j-1)) {if (get_cell(i,j-1) == player)  {useful[c] = 1;printf("%d,%d,%d\n",i,j,c);}}
-	  if (in_board(i,j+1)) {if (get_cell(i,j+1) == player)  {useful[c] = 1;printf("%d,%d,%d\n",i,j,c);}}
+	  if (in_board(i-1,j)) {if (get_cell(i-1,j,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i+1,j)) {if (get_cell(i+1,j,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i,j-1)) {if (get_cell(i,j-1,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i,j+1)) {if (get_cell(i,j+1,board) == player)  {useful[c] = 1;}}
 	}
       }
     }
@@ -122,21 +144,63 @@ char alea_useful_colors(int player) {
     if (useful[i]) {sum++;}
   }
   int r =  rand() % sum;
-  printf("%d\n", r);
-  for (i=0; i< NB_COLORS; i++) {
-    printf("%d  ", useful[i]);
-  }
-
-  for (i = 0; i< NB_COLORS; i++) {
-    if (useful[i]) {r--;}
-    if (!r==-1) {break;}
-
-  }
   
+  char decision;
+  int choice = -1;
+  for (i=0; i< NB_COLORS; i++) {
+    if (useful[i]) {choice++;}
+    if (choice == r) {decision = (char) i;break;} 
+  }
   printf("\nColor chose by random_useful AI : %c\n", i+97);
-  return (char) i;
+  return decision;
 }
 
+char greedy(int player) {
+  //chooses at random between colors that can make any progress
+  int occurrences[NB_COLORS] = {0};
+  int i,j;
+  char color;
+  int c;
+  
+  for (i = 0; i< BOARD_SIZE; i++) {
+    for (j = 0; j< BOARD_SIZE; j++) {
+      color = get_cell(i,j,board);
+      if (color>=0 && color < BOARD_SIZE) {
+	c = (int) color;
+	
+	if (in_board(i-1,j)) {if (get_cell(i-1,j,board) == player)  {occurrences[c]++;}}
+	if (in_board(i+1,j)) {if (get_cell(i+1,j,board) == player)  {occurrences[c]++;}}
+	if (in_board(i,j-1)) {if (get_cell(i,j-1,board) == player)  {occurrences[c]++;}}
+	if (in_board(i,j+1)) {if (get_cell(i,j+1,board) == player)  {occurrences[c]++;}}
+	
+      }
+    }
+  }
+  int max = 0;
+  char letter = 0;
+  for (i = 0; i<NB_COLORS; i++) {
+    if (occurrences[i] > max) {
+      max = occurrences[i];
+      letter = i;
+    }
+  }
+  printf("\nColor chose by greedy AI : %c\n", letter+97);
+  return letter;
+}
+
+int score (char * b, int color) {
+  int i;
+  int j;
+  int s = 0;
+  for (i = 0; i<BOARD_SIZE; i++) {
+    for (j = 0; j<BOARD_SIZE; j++) {
+      if (get_cell(i,j,b) == color) {
+	s += 1;
+      }
+    }
+  }
+  return s;
+}
 
 char player_choice(int p) {
   char c;
@@ -155,26 +219,30 @@ char player_choice(int p) {
 /** Program entry point */
 int main() 
 {
+  srand(time(NULL));
+  int player =  rand() % 2; //which player begins
+  printf("<<<<<<<<%d<<<<<<<\n", player);
   int score1 = 0;
   int score2 = 0;
   int limit = BOARD_SIZE * BOARD_SIZE /2 ;
-  int player = 0;
+  
   char choice ;
-  srand(time(NULL)); 
+   
    printf("\n\n  Welcome to the 7 wonders of the wonderful world of the 7 wonderful colors\n"
 	      "  *****************************************************\n\n"
 	 "Current wonderful board state:\n");
-   set_random_board();
-   print_board();
+   set_sym_board();
+   //print_board();
 
    while(score1 <= limit && score2 <= limit) {
-     
+     score1 = score(board,color1);
+     score2 = score(board,color2);
      printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
      print_board();
-     if (player) {choice =alea_useful_colors(color2);}
+     if (player) {choice =greedy(color2);}
      else {choice = player_choice(player);}
-     if (player) {update_board(color2, choice, &score2);}
-     else {update_board(color1, choice, &score1);}
+     if (player) {update_board(color2, choice, board);}
+     else {update_board(color1, choice, board);}
      player = 1-player;
        
    }
