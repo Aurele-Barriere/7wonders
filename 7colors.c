@@ -38,8 +38,8 @@ void set_cell(int x, int y, char color, char * b)
 void copy_board() {
   int i;
   int j;
-  for (i = 0; i<NB_COLORS; i++) {
-    for (j=0; j<NB_COLORS; j++) {
+  for (i = 0; i<BOARD_SIZE; i++) {
+    for (j=0; j<BOARD_SIZE; j++) {
       set_cell(i,j,get_cell(i,j,board),test_board);
     }
   }
@@ -218,10 +218,11 @@ char greedy(int player) {
   int val[NB_COLORS] = { 0 };
   for (i = 0; i< NB_COLORS; i++) {
     copy_board();
+    //print_board(test_board);
     update_board(player, i, test_board);
     val[i] = score(test_board, player);
-    printf(">>>>>>>>>>>>>>>>>>%d<<<<<<<<<<<<\n", i);
-    print_board(test_board);
+    //printf(">>>>>>>>>>>>>>>>>>%d<<<<<<<<<<<<\n", i);
+    //print_board(test_board);
   }
   printf("\n");
   int max = 0;
