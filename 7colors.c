@@ -68,11 +68,12 @@ int in_board(int x, int y) {
 
 
 void update_board(char player, char color, char * b) {
+
   int i,j;
   int change = 0;
   for (i=0; i<BOARD_SIZE; i++) {
     for (j=0; j<BOARD_SIZE; j++) {
-      if (get_cell(i,j,board) == color) {
+      if (get_cell(i,j,b) == color) {
 	if (in_board(i-1,j)) {if (get_cell(i-1,j,b) == player) {set_cell(i,j,player,b); change = 1;}}
 	if (in_board(i+1,j)) {if (get_cell(i+1,j,b) == player) {set_cell(i,j,player,b); change = 1;}}
 	if (in_board(i,j-1)) {if (get_cell(i,j-1,b) == player) {set_cell(i,j,player,b); change = 1;}}
@@ -80,7 +81,8 @@ void update_board(char player, char color, char * b) {
       }
     }
   }
-  if (change) {update_board(player, color, b );}	
+  if (change) {update_board(player, color, b );}
+  
 }
 
 void set_random_board() {
@@ -218,11 +220,8 @@ char greedy(int player) {
   int val[NB_COLORS] = { 0 };
   for (i = 0; i< NB_COLORS; i++) {
     copy_board();
-    //print_board(test_board);
     update_board(player, i, test_board);
     val[i] = score(test_board, player);
-    //printf(">>>>>>>>>>>>>>>>>>%d<<<<<<<<<<<<\n", i);
-    //print_board(test_board);
   }
   printf("\n");
   int max = 0;
