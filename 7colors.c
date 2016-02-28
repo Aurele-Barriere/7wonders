@@ -8,7 +8,7 @@
 
 
 /* We want a 30x30 board game by default */
-#define BOARD_SIZE 50 
+#define BOARD_SIZE 30 
 #define NB_COLORS 7
 #define color1 -3
 #define color2 64-97
@@ -35,17 +35,27 @@ void set_cell(int x, int y, char color, char * b)
    b[y*BOARD_SIZE + x] = color;
 }
    
+void copy_board() {
+  int i;
+  int j;
+  for (i = 0; i<NB_COLORS; i++) {
+    for (j=0; j<NB_COLORS; j++) {
+      set_cell(i,j,get_cell(i,j,board),test_board);
+    }
+  }
+}
+
 /** Prints the current state of the board on screen
  * 
  * Implementation note: It would be nicer to do this with ncurse or even 
  * SDL/allegro, but this is not really the purpose of this assignment.
  */
-void print_board() 
+void print_board(char * b) 
 {
    int i, j;
    for (i=0; i<BOARD_SIZE; i++) {
       for (j=0; j<BOARD_SIZE; j++) 
-	printf("%c ", get_cell(i, j, board)+97);
+	printf("%c ", get_cell(i, j, b)+97);
       printf("\n");
    }
 }
@@ -63,14 +73,14 @@ void update_board(char player, char color, char * b) {
   for (i=0; i<BOARD_SIZE; i++) {
     for (j=0; j<BOARD_SIZE; j++) {
       if (get_cell(i,j,board) == color) {
-	if (in_board(i-1,j)) {if (get_cell(i-1,j,board) == player) {set_cell(i,j,player,b); change = 1;}}
-	if (in_board(i+1,j)) {if (get_cell(i+1,j,board) == player) {set_cell(i,j,player,b); change = 1;}}
-	if (in_board(i,j-1)) {if (get_cell(i,j-1,board) == player) {set_cell(i,j,player,b); change = 1;}}
-	if (in_board(i,j+1)) {if (get_cell(i,j+1,board) == player) {set_cell(i,j,player,b); change = 1;}}
+	if (in_board(i-1,j)) {if (get_cell(i-1,j,b) == player) {set_cell(i,j,player,b); change = 1;}}
+	if (in_board(i+1,j)) {if (get_cell(i+1,j,b) == player) {set_cell(i,j,player,b); change = 1;}}
+	if (in_board(i,j-1)) {if (get_cell(i,j-1,b) == player) {set_cell(i,j,player,b); change = 1;}}
+	if (in_board(i,j+1)) {if (get_cell(i,j+1,b) == player) {set_cell(i,j,player,b); change = 1;}}
       }
     }
   }
-  if (change) {update_board(player, color, board );}	
+  if (change) {update_board(player, color, b );}	
 }
 
 void set_random_board() {
@@ -155,7 +165,7 @@ char alea_useful_colors(int player) {
   return decision;
 }
 
-char greedy(int player) {
+char wrong_greedy(int player) {
   //chooses at random between colors that can make any progress
   int occurrences[NB_COLORS] = {0};
   int i,j;
@@ -184,9 +194,10 @@ char greedy(int player) {
       letter = i;
     }
   }
-  printf("\nColor chose by greedy AI : %c\n", letter+97);
+  printf("\nColor chose by wrong greedy AI : %c\n", letter+97);
   return letter;
 }
+
 
 int score (char * b, int color) {
   int i;
@@ -201,6 +212,31 @@ int score (char * b, int color) {
   }
   return s;
 }
+
+char greedy(int player) {
+  int i =0;
+  int val[NB_COLORS] = { 0 };
+  for (i = 0; i< NB_COLORS; i++) {
+    copy_board();
+    update_board(player, i, test_board);
+    val[i] = score(test_board, player);
+    printf(">>>>>>>>>>>>>>>>>>%d<<<<<<<<<<<<\n", i);
+    print_board(test_board);
+  }
+  printf("\n");
+  int max = 0;
+  char choice = 0;
+  for (i=0; i<NB_COLORS; i++) {
+    if (val[i]>=max) {
+      max = val[i];
+      choice = i;
+    }
+  }
+  printf("color chose by true greedy AI : %c\n", choice +97);
+  return choice;
+}
+
+
 
 char player_choice(int p) {
   char c;
@@ -238,7 +274,7 @@ int main()
      score1 = score(board,color1);
      score2 = score(board,color2);
      printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
-     print_board();
+     print_board(board);
      if (player) {choice =greedy(color2);}
      else {choice = player_choice(player);}
      if (player) {update_board(color2, choice, board);}
@@ -246,7 +282,7 @@ int main()
      player = 1-player;
        
    }
-   print_board();
+   print_board(board);
    printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
 
 
