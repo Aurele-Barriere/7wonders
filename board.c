@@ -103,3 +103,18 @@ void set_sym_board() {
   set_cell(0,BOARD_SIZE-1, color1,board);
   set_cell(BOARD_SIZE-1,0, color2,board);
 }
+
+//calculates the score of a player on a board
+int score (char * b, int color) {
+  int i;
+  int j;
+  int s = 0;
+  for (i = 0; i<BOARD_SIZE; i++) {
+    for (j = 0; j<BOARD_SIZE; j++) {
+      if (get_cell(i,j,b) == color) {
+	s += 1;
+      }
+    }
+  }
+  return s;
+}

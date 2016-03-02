@@ -30,5 +30,8 @@ void set_random_board();
 /** Creates a symetric board */
 void set_sym_board();
 
+/** Calculates score for a given player on a given board */
+int score (char * b, int color);
+
 
 #endif
