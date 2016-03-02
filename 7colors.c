@@ -8,11 +8,14 @@
 
 
 /* We want a 30x30 board game by default */
+/*
 #define BOARD_SIZE 30 
 #define NB_COLORS 7
 #define color1 -3
 #define color2 64-97
-
+*/
+#include "defines.h"
+#include "board.h"
 
 /** Represent the actual current board game 
  * 
@@ -20,8 +23,8 @@
  *  an appropriate data structure would also be preferred), but don't worry. 
  *  For this first assignment, no dinosaure will get you if you do that. 
  */
-char      board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // Filled with zeros
-char test_board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // to test things in our AI
+//char      board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // Filled with zeros
+//char test_board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // to test things in our AI
 
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y, char * b) 
