@@ -10,31 +10,7 @@
 #include "defines.h"
 #include "board.h"
 
-   
-void copy_board() {
-  int i;
-  int j;
-  for (i = 0; i<BOARD_SIZE; i++) {
-    for (j=0; j<BOARD_SIZE; j++) {
-      set_cell(i,j,get_cell(i,j,board),test_board);
-    }
-  }
-}
 
-/** Prints the current state of the board on screen
- * 
- * Implementation note: It would be nicer to do this with ncurse or even 
- * SDL/allegro, but this is not really the purpose of this assignment.
- */
-void print_board(char * b) 
-{
-   int i, j;
-   for (i=0; i<BOARD_SIZE; i++) {
-      for (j=0; j<BOARD_SIZE; j++) 
-	printf("%c ", get_cell(i, j, b)+97);
-      printf("\n");
-   }
-}
 
 int in_board(int x, int y) {
   if (x>=0 && x< BOARD_SIZE && y>=0 && y<BOARD_SIZE) {
