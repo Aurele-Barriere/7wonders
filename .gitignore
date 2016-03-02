@@ -1,3 +1,8 @@
 !*.c
 *.o
 !7colors
+!*.tex
+!*.pdf
+!*.sh
+*.log
+*.toc
