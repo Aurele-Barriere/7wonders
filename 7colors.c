@@ -10,19 +10,6 @@
 #include "defines.h"
 #include "board.h"
 
-
-
-/** Retrieves the color of a given board cell */
-char get_cell(int x, int y, char * b) 
-{
-   return b[y*BOARD_SIZE + x];
-}
-
-/** Changes the color of a given board cell */
-void set_cell(int x, int y, char color, char * b) 
-{
-   b[y*BOARD_SIZE + x] = color;
-}
    
 void copy_board() {
   int i;
