@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "board.h"
 #include "defines.h"
 
@@ -38,4 +39,67 @@ void print_board(char * b)
 	printf("%c ", get_cell(i, j, b)+97);
       printf("\n");
    }
+}
+
+//checking board range
+int in_board(int x, int y) {
+  if (x>=0 && x< BOARD_SIZE && y>=0 && y<BOARD_SIZE) {
+    return 1;}
+  else {return 0;}
+}
+
+//update, given player, choice and board
+void update_board(char player, char color, char * b) {
+
+  int i,j;
+  int change = 0;
+  for (i=0; i<BOARD_SIZE; i++) {
+    for (j=0; j<BOARD_SIZE; j++) {
+      if (get_cell(i,j,b) == color) {
+	if (in_board(i-1,j)) {if (get_cell(i-1,j,b) == player) {set_cell(i,j,player,b); change = 1;}}
+	if (in_board(i+1,j)) {if (get_cell(i+1,j,b) == player) {set_cell(i,j,player,b); change = 1;}}
+	if (in_board(i,j-1)) {if (get_cell(i,j-1,b) == player) {set_cell(i,j,player,b); change = 1;}}
+	if (in_board(i,j+1)) {if (get_cell(i,j+1,b) == player) {set_cell(i,j,player,b); change = 1;}}
+      }
+    }
+  }
+  if (change) {update_board(player, color, b );}
+  
+}
+
+//creates random board
+void set_random_board() {
+  int i, j;
+  int r = 0;
+  //RAND_MAX = NB_COLORS;
+  for (i = 0; i< BOARD_SIZE; i++){
+    for (j=0; j < BOARD_SIZE; j++) {
+      r = rand() % NB_COLORS;
+      set_cell(i,j,r,board);
+    }
+  }
+  set_cell(0,BOARD_SIZE-1, color1,board);
+  set_cell(BOARD_SIZE-1,0, color2,board);
+}
+
+//creates symetric board
+void set_sym_board() {
+  int i, j;
+  int r = 0;
+  //RAND_MAX = NB_COLORS;
+  //first half
+  for (i = 0; i< BOARD_SIZE; i++){
+    for (j=i; j < BOARD_SIZE; j++) {
+      r = rand() % NB_COLORS;
+      set_cell(i,j,r,board);
+    }
+  }
+  //second half
+  for (i = 0; i<BOARD_SIZE; i++) {
+    for (j = 0; j<i; j++) {
+      set_cell(i,j,get_cell(j,i,board),board);
+    }
+  }
+  set_cell(0,BOARD_SIZE-1, color1,board);
+  set_cell(BOARD_SIZE-1,0, color2,board);
 }

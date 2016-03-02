@@ -18,4 +18,17 @@ void copy_board();
 /** Printing a given board */
 void print_board(char *b);
 
+/** Is an element within the BOARD_SIZE range? */
+int in_board(int x, int y);
+
+/** Given a player and its choice, update the given board */
+void update_board(char player, char color, char * b);
+
+/** Creates a completely random board */
+void set_random_board();
+
+/** Creates a symetric board */
+void set_sym_board();
+
+
 #endif
