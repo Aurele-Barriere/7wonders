@@ -11,8 +11,6 @@
 #include "board.h"
 
 
-
-
 char alea () {
   char r =  rand() % 7;
   printf("Color chose by random AI : %c\n\n\n\n\n", r+97);
