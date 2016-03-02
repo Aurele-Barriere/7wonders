@@ -1,30 +1,16 @@
-/* Template of the 7 wonders of the world of the 7 colors assigment. */
+/*
+  Aurele Barriere & Nathan Tommasset
+  ARCSYS 2 
+*/
 
-/* Cf. http://people.irisa.fr/Anne-Cecile.Orgerie/teaching2015.html  */
 
-#include <stdio.h>  /* printf */
+#include <stdio.h>  
 #include <stdlib.h>
 #include <time.h>
-
-
-/* We want a 30x30 board game by default */
-/*
-#define BOARD_SIZE 30 
-#define NB_COLORS 7
-#define color1 -3
-#define color2 64-97
-*/
 #include "defines.h"
 #include "board.h"
 
-/** Represent the actual current board game 
- * 
- * NOTE: global variables are usually discouraged (plus encapsulation in
- *  an appropriate data structure would also be preferred), but don't worry. 
- *  For this first assignment, no dinosaure will get you if you do that. 
- */
-//char      board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // Filled with zeros
-//char test_board[BOARD_SIZE * BOARD_SIZE] = { 0 }; // to test things in our AI
+
 
 /** Retrieves the color of a given board cell */
 char get_cell(int x, int y, char * b) 
