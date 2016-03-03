@@ -10,6 +10,25 @@
 #include "board.h"
 #include "strategy.h"
 
+/** Victory condition */
+int victory(int score1, int score2) {
+  int limit = (BOARD_SIZE*BOARD_SIZE)/2;
+  if (score1>limit || score2>limit) {
+    return 1;
+  }
+  return 0;
+}
+    
+
+/** Draw condition */
+int draw(int score1, int score2) {
+  int limit = (BOARD_SIZE*BOARD_SIZE)/2;
+  if (score1 == limit && score2 == limit) {
+    return 1;
+  }
+  return 0;
+}
+
 /** Program entry point */
 int main() 
 {
