@@ -6,7 +6,7 @@
 //random
 char alea () {
   char r =  rand() % 7;
-  printf("Color chose by random AI : %c\n", r+97);
+  if(printing){printf("Color chose by random AI : %c\n", r+97);}
   //getchar();
   return r;
 }
@@ -45,7 +45,7 @@ char alea_useful_colors(int player) {
     if (useful[i]) {choice++;}
     if (choice == r) {decision = (char) i;break;} 
   }
-  printf("\nColor chose by random_useful AI : %c\n", i+97);
+  if(printing){printf("\nColor chose by random_useful AI : %c\n", i+97);}
   return decision;
 }
 
@@ -78,7 +78,7 @@ char wrong_greedy(int player) {
       letter = i;
     }
   }
-  printf("\nColor chose by wrong greedy AI : %c\n", letter+97);
+  if(printing){printf("\nColor chose by wrong greedy AI : %c\n", letter+97);}
   return letter;
 }
 
@@ -91,7 +91,7 @@ char greedy(int player) {
     update_board(player, i, test_board);
     val[i] = score(test_board, player);
   }
-  printf("\n");
+  
   int max = 0;
   char choice = 0;
   for (i=0; i<NB_COLORS; i++) {
@@ -100,7 +100,7 @@ char greedy(int player) {
       choice = i;
     }
   }
-  printf("color chose by true greedy AI : %c\n", choice +97);
+  if(printing){printf("color chose by true greedy AI : %c\n", choice +97);}
   return choice;
 }
 
@@ -126,7 +126,6 @@ char hegemony(int player) {
     update_board(player, i, test_board);
     val[i] = score(test_board, player);
   }
-  printf("\n");
   int max = 0;
   char choice = 0;
   for (i=0; i<NB_COLORS; i++) {
@@ -135,6 +134,6 @@ char hegemony(int player) {
       choice = i;
     }
   }
-  printf("color chose by hegemony AI : %c\n", choice +97);
+  if(printing){printf("color chose by hegemony AI : %c\n", choice +97);}
   return choice;
 }

@@ -29,38 +29,44 @@ int draw(int score1, int score2) {
   return 0;
 }
 
-/** Program entry point */
-int main() 
-{
+/** Game. returns the number of the winner. Specify with boolean ptinting if theprogramm should print anything */
+int game() {
   srand(time(NULL));
   int player =  rand() % 2; //which player begins
-  printf("<<<<<<<<%d<<<<<<<\n", player);
+  if (printing) {printf("<<<<<<<<%d<<<<<<<\n", player);}
   int score1 = 0;
-  int score2 = 0;
-  //int limit = BOARD_SIZE * BOARD_SIZE /2 ;
-  
+  int score2 = 0;  
   char choice ;
    
-   printf("\n\n  Welcome to the 7 wonders of the wonderful world of the 7 wonderful colors\n"
+  if(printing){printf("\n\n  Welcome to the 7 wonders of the wonderful world of the 7 wonderful colors\n"
 	      "  *****************************************************\n\n"
-	 "Current wonderful board state:\n");
+		      "Current wonderful board state:\n");}
    set_sym_board();
    
 
    while(!victory(score1, score2) && !draw(score1,score2)) {
-     print_board(board);
+     if(printing){print_board(board);}
      if (player) {choice =hegemony(color2);}
-     else {choice = player_choice(player);}
+     else {choice = greedy(color1);}
      if (player) {update_board(color2, choice, board);}
      else {update_board(color1, choice, board);}
      player = 1-player;
      score1 = score(board,color1);
      score2 = score(board,color2);
-     printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
+     if(printing){printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));}
    }
-   print_board(board);
-   printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
+  
 
 
-   return 0; // Everything went well
-} 
+  return 0;
+}
+
+
+
+/** Program entry point */
+int main() 
+{
+  game();
+
+  return 0; // Everything went well
+}
