@@ -34,7 +34,7 @@ int main()
      printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
      print_board(board);
      if (player) {choice =hegemony(color2);}
-     else {choice = player_choice(player);}
+     else {choice = greedy(color1);}
      if (player) {update_board(color2, choice, board);}
      else {update_board(color1, choice, board);}
      player = 1-player;
@@ -45,4 +45,4 @@ int main()
 
 
    return 0; // Everything went well
-}
+} 
