@@ -53,7 +53,6 @@ int in_board(int x, int y) {
 
 //update, given player, choice and board
 void update_board(char player, char color, char * b) {
-
   int i,j;
   int change = 0;
   for (i=0; i<BOARD_SIZE; i++) {

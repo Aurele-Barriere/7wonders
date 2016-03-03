@@ -1,3 +1,4 @@
+/** Strategies that can be used in the game */
 #ifndef STRATEGY_H
 #define STRATEGY_H
 

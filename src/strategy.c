@@ -7,7 +7,6 @@
 char alea () {
   char r =  rand() % 7;
   if(printing){printf("Color chose by random AI : %c\n", r+97);}
-  //getchar();
   return r;
 }
 
@@ -104,7 +103,7 @@ char greedy(int player) {
   return choice;
 }
 
-//ask for the playe's choice
+//ask for the player's choice
 char player_choice(int player) {
   char c;
   printf("What color do you choose, player %d?\n", player);
