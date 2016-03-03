@@ -5,7 +5,6 @@
 
 extern int printing; 
 
-
 #include <stdio.h>  
 #include <stdlib.h>
 #include <time.h>
@@ -33,21 +32,18 @@ int draw(int score1, int score2) {
   return 0;
 }
 
-/** Game. returns the number of the winner. Specify with boolean ptinting if theprogramm should print anything */
+
+/** Game. returns the number of the winner (1 or 2 or 0 for draw). Specify with boolean ptinting if the programm should print anything */
 int game(int print) {
   printing = print;
   int player =  rand() % 2; //which player begins
-  if (printing) {printf("<<<<<<<<%d<<<<<<<\n", player);}
   int score1 = 0;
   int score2 = 0;  
   char choice ;
    
-  if(printing){printf("\n\n  Welcome to the 7 wonders of the wonderful world of the 7 wonderful colors\n"
-	      "  *****************************************************\n\n"
-		      "Current wonderful board state:\n");}
+  if(printing){printf("\n\n  Welcome to the 7 wonders of the wonderful world of the 7 wonderful colors\n");}
    set_sym_board();
-   
-
+  
    while(!victory(score1, score2) && !draw(score1,score2)) {
      if(printing){print_board(board);}
      if (player) {choice =hegemony(color2);}
@@ -68,15 +64,14 @@ int game(int print) {
 }
 
 
-
 /** Program entry point */
 int main() 
 {
   srand(time(NULL)); //initializing random
   int i;
   
-  for (i = 0; i<1000; i++) {
+  for (i = 0; i<100; i++) {
     printf("%d\n", game(0));
   }
-  return 0; // Everything went well
+  return 0; 
 }
