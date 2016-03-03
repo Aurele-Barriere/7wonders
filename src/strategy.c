@@ -105,14 +105,14 @@ char greedy(int player) {
 }
 
 //ask for the playe's choice
-char player_choice(int p) {
+char player_choice(int player) {
   char c;
-  printf("What color do you choose, player %d?\n", p);
+  printf("What color do you choose, player %d?\n", player);
   printf("Must be between a-g  \n");
   c = getchar();
   getchar();
   c -= 97;
   if (c >= 0 && c < NB_COLORS) {
     return c;}
-  else {return player_choice(p);}
+  else {return player_choice(player);}
 }

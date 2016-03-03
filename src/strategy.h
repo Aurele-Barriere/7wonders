@@ -14,7 +14,7 @@ char wrong_greedy(int player);
 char greedy(int player);
 
 /** Ask the player his choice */
-char player_choice(int p);
+char player_choice(int player);
 
 
 #endif
