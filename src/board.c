@@ -34,8 +34,8 @@ void copy_board() {
 void print_board(char * b) 
 {
    int i, j;
-   printf("Frontier1: %d, Frontier2: %d", frontier(b,color1), frontier(b,color2));
-   printf("\n");
+   printf("Score1: %d, Score2: %d\n", score(b,color1), score(b,color2));
+   printf("Frontier1: %d, Frontier2: %d\n", frontier(b,color1), frontier(b,color2));
    for (i=0; i<BOARD_SIZE; i++) {
       for (j=0; j<BOARD_SIZE; j++) 
 	printf("%c ", get_cell(i, j, b)+97);
@@ -124,27 +124,30 @@ int score (char * b, int color) {
 //frontier for hegemony
 int frontier (char * b, int color) {
   int f = 0;
+  int in_frontier = 0;
   int i;
   int j;
   for (i = 0; i<BOARD_SIZE; i++) {
     for (j = 0; j<BOARD_SIZE; j++) {
+      in_frontier = 0;
       if (get_cell(i,j,b) != color) {
 	if (in_board(i,j+1)) {
 	  if (get_cell(i,j+1,b)==color) {
-	    f += 1;
-	    break;}}
+	    in_frontier = 1;
+	  }}
 	if (in_board(i,j-1)) {
 	  if (get_cell(i,j-1,b)==color) {
-	    f += 1;
-	    break;}}
+	    in_frontier = 1;
+	    }}
 	if (in_board(i+1,j)) {
 	  if (get_cell(i+1,j,b)==color) {
-	    f += 1;
-	    break;}}
+	    in_frontier = 1;
+	    }}
 	if (in_board(i-1,j)) {
 	  if (get_cell(i-1,j,b)==color) {
-	    f += 1;
-	    break;}}
+	    in_frontier = 1;
+	    }}
+	f += in_frontier;
       }
     }
   }
