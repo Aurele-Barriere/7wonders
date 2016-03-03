@@ -3,6 +3,7 @@
 #include "board.h"
 #include "defines.h"
 
+int printing = 1;
 
 char      board[BOARD_SIZE * BOARD_SIZE] = { 0 };
 char test_board[BOARD_SIZE * BOARD_SIZE] = { 0 }; 

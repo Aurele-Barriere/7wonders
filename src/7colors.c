@@ -3,12 +3,16 @@
   ARCSYS 2 
 */
 
+extern int printing; 
+
+
 #include <stdio.h>  
 #include <stdlib.h>
 #include <time.h>
 #include "defines.h"
 #include "board.h"
 #include "strategy.h"
+
 
 /** Victory condition */
 int victory(int score1, int score2) {

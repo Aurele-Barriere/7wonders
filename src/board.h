@@ -2,8 +2,8 @@
 #define BOARD_H
 #include "defines.h"
 
-
-extern char      board[BOARD_SIZE * BOARD_SIZE];
+extern int printing; //should we print the board and choices?
+extern char      board[BOARD_SIZE * BOARD_SIZE]; //the actual board
 extern char test_board[BOARD_SIZE * BOARD_SIZE]; // to test things in our AI
 
 /** Retrieves the color of a given board cell */
