@@ -33,5 +33,8 @@ void set_sym_board();
 /** Calculates score for a given player on a given board */
 int score (char * b, int color);
 
+/** Calculates frontier for a given player on a given board */
+int frontier (char * b, int color);
+
 
 #endif

@@ -118,3 +118,37 @@ int score (char * b, int color) {
   }
   return s;
 }
+
+//frontier for hegemony
+int frontier (char * b, int color) {
+  int f = 0;
+  int i;
+  int j;
+  for (i = 0; i<BOARD_SIZE; i++) {
+    for (j = 0; j<BOARD_SIZE; j++) {
+      if (get_cell(i,j,b) != color) {
+	if (in_board(i,j+1)) {
+	  if (get_cell(i,j+1,b)==color) {
+	    f += 1;
+	    break;}}
+	if (in_board(i,j-1)) {
+	  if (get_cell(i,j-1,b)==color) {
+	    f += 1;
+	    break;}}
+	if (in_board(i+1,j)) {
+	  if (get_cell(i+1,j,b)==color) {
+	    f += 1;
+	    break;}}
+	if (in_board(i-1,j)) {
+	  if (get_cell(i-1,j,b)==color) {
+	    f += 1;
+	    break;}}
+      }
+    }
+  }
+  return f;
+}
+
+
+
+
