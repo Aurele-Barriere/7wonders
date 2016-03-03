@@ -37,7 +37,7 @@ int main()
   printf("<<<<<<<<%d<<<<<<<\n", player);
   int score1 = 0;
   int score2 = 0;
-  int limit = BOARD_SIZE * BOARD_SIZE /2 ;
+  //int limit = BOARD_SIZE * BOARD_SIZE /2 ;
   
   char choice ;
    
@@ -45,19 +45,18 @@ int main()
 	      "  *****************************************************\n\n"
 	 "Current wonderful board state:\n");
    set_sym_board();
-   //print_board();
+   
 
-   while(score1 <= limit && score2 <= limit) {
-     score1 = score(board,color1);
-     score2 = score(board,color2);
-     printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
+   while(!victory(score1, score2) && !draw(score1,score2)) {
      print_board(board);
      if (player) {choice =hegemony(color2);}
-     else {choice = greedy(color1);}
+     else {choice = player_choice(player);}
      if (player) {update_board(color2, choice, board);}
      else {update_board(color1, choice, board);}
      player = 1-player;
-       
+     score1 = score(board,color1);
+     score2 = score(board,color2);
+     printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
    }
    print_board(board);
    printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));
