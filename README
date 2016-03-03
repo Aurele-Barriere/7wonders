@@ -6,7 +6,8 @@ ARCSYS 2
 TO DO:
 - hegemony amelioration
 - write report
-- make tournaments
-- the game doesn't end on a draw
+- make tournaments -> see below
+- the game doesn't end on a draw -> should be corrected
 - more strategies
 - asbstract maximisation strategy
+- when doing tournaments, the same result happens again and again for a while. why? maybe the initialization of random with time. 

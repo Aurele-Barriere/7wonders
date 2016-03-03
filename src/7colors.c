@@ -34,7 +34,8 @@ int draw(int score1, int score2) {
 }
 
 /** Game. returns the number of the winner. Specify with boolean ptinting if theprogramm should print anything */
-int game() {
+int game(int print) {
+  printing = print;
   srand(time(NULL));
   int player =  rand() % 2; //which player begins
   if (printing) {printf("<<<<<<<<%d<<<<<<<\n", player);}
@@ -60,7 +61,9 @@ int game() {
      if(printing){printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));}
    }
   
-
+   if (draw(score1, score2)) {return 0;}
+   if (score1>score2) {return 1;}
+   if (score2>score1) {return 2;}
 
   return 0;
 }
@@ -70,7 +73,10 @@ int game() {
 /** Program entry point */
 int main() 
 {
-  game();
-
+  int i;
+  
+  for (i = 0; i<1000; i++) {
+    printf("%d\n", game(0));
+  }
   return 0; // Everything went well
 }
