@@ -34,6 +34,8 @@ void copy_board() {
 void print_board(char * b) 
 {
    int i, j;
+   printf("Frontier1: %d, Frontier2: %d", frontier(b,color1), frontier(b,color2));
+   printf("\n");
    for (i=0; i<BOARD_SIZE; i++) {
       for (j=0; j<BOARD_SIZE; j++) 
 	printf("%c ", get_cell(i, j, b)+97);
