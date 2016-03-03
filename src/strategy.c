@@ -116,3 +116,25 @@ char player_choice(int player) {
     return c;}
   else {return player_choice(player);}
 }
+
+//max frontier
+char hegemony(int player) {
+  int i =0;
+  int val[NB_COLORS] = { 0 };
+  for (i = 0; i< NB_COLORS; i++) {
+    copy_board();
+    update_board(player, i, test_board);
+    val[i] = score(test_board, player);
+  }
+  printf("\n");
+  int max = 0;
+  char choice = 0;
+  for (i=0; i<NB_COLORS; i++) {
+    if (val[i]>=max) {
+      max = val[i];
+      choice = i;
+    }
+  }
+  printf("color chose by hegemony AI : %c\n", choice +97);
+  return choice;
+}

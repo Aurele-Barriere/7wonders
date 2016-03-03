@@ -16,5 +16,8 @@ char greedy(int player);
 /** Ask the player his choice */
 char player_choice(int player);
 
+/** Maximize the frontier */
+char hegemony(int player);
+
 
 #endif
