@@ -36,8 +36,8 @@ Pour obtenir ce nombre, on importe le module \texttt{stdlib}, on initialise le g
 
 Cependant, il faut bien initialiser l'aléatoire au début de la fonction principale, et pas à chaque partie. En effet, dans la suite on lancera plein de parties en même temps, qui seront donc identiques si lancées à moins d'une seconde d'intervalle.
 
-Enfin,\texttt{rand()} modulo un nombre de couleurs ne produit pas un résultat avec une probabilité parfaitement uniforme. %a detailler
-Cependant, vu le petit nombre de couleurs, ce n'est pas un problème significatif.
+Enfin,\texttt{rand()} modulo un nombre de couleurs ne produit pas un résultat avec une probabilité parfaitement uniforme, si le nombre d'entiers accessibles par \texttt{rand()} n'est pas un multiple du nombre de couleurs. En effet, soit $d$ le nombre de couleurs. Si par exemple $k\times d - 1$ couleurs sont accessibles par \texttt{rand()}, on aura $k$ entiers dont le résultat du modulo donne 0, mais seulment $k-1$ dont le résultat donne $d-1$.
+Cependant, vu le petit nombre de couleurs et le grand dombre d'entiers accessibles avec \texttt{rand()}, ce n'est pas un problème significatif.
 
 \question{2.2}
 On créée une fonction \texttt{void update\_board(char player, char color, char * b)}. Elle prend en argument un joueur \texttt{player}, une couleur jouée \texttt{color} et un plateau \texttt{b}.
