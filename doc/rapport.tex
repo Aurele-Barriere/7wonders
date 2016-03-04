@@ -6,11 +6,44 @@
 \usepackage{fullpage}
 \usepackage{graphicx}
 
+\def\question#1{\subsection*{#1}}
+\def\sec#1{\section*{#1}}
+
 \title{Les 7 merveilleuses merveilles du merveilleux monde des 7 merveilleuses couleurs}
 \author{Aurèle Barrière \& Nathan Tomasset}
 \date{8 mars 2016}
 
 \begin{document}
 \maketitle
+
+\sec{Intoduction}
+Nous présentons dans ce projet une implémentation du jeu des 7 couleurs dont les règles seront décrites plus bas. L'enjeu est d'implémenter en C le jeu, puis de créer des stratégies pour jouer.
+%à compléter
+
+\question{Règles du jeu}
+Le jeu se présente comme un tableau carré de 30 case de côté (ce nombre est paramétrable dans notre implémentatoin). Initialment, il est rempli aléaoirement avec 7 ``couleurs'' (ou lettres). Dans deux angles opposés, il y a une huitième et une neuvième couleurs : celles des joueurs. Tour à tour, les joueurs choisissent une couleur parmi les 7. Toutes les cases de cette couleur et adjacente à la couleur du joueur (ou adjacente à une case qui vient de changer de couleur à ce tour par cette méthode) prennent désormais la couleur du joueur. Le but est de posséder plus de la moitié du plateau.
+
+\sec{Organisation du projet}
+
+%schéma objet, structures utilisées, ...
+
+
+\sec{Voir le monde en 7 couleurs}
+\question{2.1} 
+Pour initialiser le tableau de manière aléatoire, on parcourt la matrice (initialisée avec des 0), et on remplace chaque coefficient par une des 7 couleurs.
+
+Pour obtenir ce nombre, on importe le module \texttt{stdlib}, on initialise le générateur pseudo-aléatoire avec le temps (\texttt{srand(time(NULL));}) et on prend le résultat de la fonction \texttt{rand()} modulo le nombre de couleurs.
+
+Cependant, il faut bien initialiser l'aléatoire au début de la fonction principale, et pas à chaque partie. En effet, dans la suite on lancera plein de parties en même temps, qui seront donc identiques si lancées à moins d'une seconde d'intervalle.
+
+Enfin,\texttt{rand()} modulo un nombre de couleurs ne produit pas un résultat avec une probabilité parfaitement uniforme. %a detailler
+Cependant, vu le petit nombre de couleurs, ce n'est pas un problème significatif.
+
+\question{2.2}
+On créée une fonction \texttt{void update\_board(char player, char color, char * b)}. Elle prend en argument un joueur \texttt{player}, une couleur jouée \texttt{color} et un plateau \texttt{b}.
+
+Elle consiste à parcourir la matrice, et si on trouve une case qui est de la couleur jouée et à côté d'une case de la couleur du joueur, on la remplace et on indique dans une variable qu'il y a eu un changement.
+S'il y a eu changement, il faut recommencer le parcours de la matrice. 
+
 
 \end{document}
