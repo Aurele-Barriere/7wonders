@@ -21,7 +21,7 @@ Nous présentons dans ce projet une implémentation du jeu des 7 couleurs dont l
 %à compléter
 
 \question{Règles du jeu}
-Le jeu se présente comme un tableau carré de 30 case de côté (ce nombre est paramétrable dans notre implémentatoin). Initialment, il est rempli aléaoirement avec 7 ``couleurs'' (ou lettres). Dans deux angles opposés, il y a une huitième et une neuvième couleurs : celles des joueurs. Tour à tour, les joueurs choisissent une couleur parmi les 7. Toutes les cases de cette couleur et adjacente à la couleur du joueur (ou adjacente à une case qui vient de changer de couleur à ce tour par cette méthode) prennent désormais la couleur du joueur. Le but est de posséder plus de la moitié du plateau.
+Le jeu se présente comme un tableau carré de 30 case de côté (ce nombre est paramétrable dans notre implémentatoin). Initialement, il est rempli aléaoirement avec 7 ``couleurs'' (ou lettres). Dans deux angles opposés, il y a une huitième et une neuvième couleurs : celles des joueurs. Tour à tour, les joueurs choisissent une couleur parmi les 7. Toutes les cases de cette couleur et adjacente à la couleur du joueur (ou adjacente à une case qui vient de changer de couleur à ce tour par cette méthode) prennent désormais la couleur du joueur. Le but est de posséder plus de la moitié du plateau.
 
 \sec{Organisation du projet}
 
@@ -45,8 +45,10 @@ On créée une fonction \texttt{void update\_board(char player, char color, char
 Elle consiste à parcourir la matrice, et si on trouve une case qui est de la couleur jouée et à côté d'une case de la couleur du joueur, on la remplace et on indique dans une variable qu'il y a eu un changement.
 S'il y a eu changement, il faut recommencer le parcours de la matrice.
 
-On pose $n$ la taille du tableau. Dans le pire cas, il faut réappliquer $n$ fois le parcours de matrice (à chaque parcours, il y a un changement). On a donc une complexité en $\mathcal{O}(n^3)$ dans le pire cas.
+On pose $n$ la taille du tableau. Dans le pire cas, il faut réappliquer $2\times n$ fois le parcours de matrice : à chaque parcours, il y a un changement. On a donc une complexité en $\mathcal{O}(n^3)$ dans le pire cas.
 %il faut détailler
+%je crois meme que c'est faux :'(
+
 
 \question{2.3}
 %TO DO
@@ -73,7 +75,7 @@ On peut également calculer le pourcentage en calculant $\frac{score \times 100}
 
 \sec{La stratégie de l'aléa}
 \question{4.1}
-Dans les fichiers de strategies (\texttt{strategy.c, strategy.h}), on implémente une stratégie aléatoire : de la même manière qu'on choisissait une couleur aléatoire pour initialiser le plateau, on retourne une couleur aléatoire que le joueur artificiel va jouer.
+Dans les fichiers de stratégies (\texttt{strategy.c, strategy.h}), on implémente une stratégie aléatoire : de la même manière qu'on choisissait une couleur aléatoire pour initialiser le plateau, on retourne une couleur aléatoire que le joueur artificiel va jouer.
 
 \question{4.2}
 On implémente une fonction \texttt{char alea\_useful\_colors(int player)} qui va opérer ainsi :
@@ -94,7 +96,7 @@ Enfin, on cherche l'indice maximum de ce tableau : c'est la couleur à jouer.
 %remarque : généralisation de maximisation de fonction.
 
 \question{5.2}
-Pour qu'un affrontement soit équitable, il faut alterner le premier joueur. En effet, commencer donne un avantage (pour s'en convaincre, s'imaginer le jeu à 1 ou 2 couleurs ou encore lancer des compétitions utilisant la même stratégie). On va tirer aléatoirement le premier joueur.
+Pour qu'un affrontement soit équitable, il faut alterner le premier joueur. En effet, commencer donne un avantage (pour s'en convaincre, s'imaginer le jeu à 1 ou 2 couleurs ou encore lancer des compétitions utilisant la même stratégie). On va tirer aléatoirement le premier joueur. Avec un grand nombre de parties, on devrait tendre vers un résultat équitable.
 
 Le côté est également important. On va donc générer seulement la moitié de la matrice, puis la répliquer. La matrice est donc symétrique suivant la diagonale qui ne contient pas les positions initiales des joueurs. 
 
