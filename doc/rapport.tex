@@ -25,7 +25,6 @@ Nous proposerons une implémentation organisée, puis différentes stratégies p
 Le jeu se présente comme un tableau carré de 30 case de côté (ce nombre est paramétrable dans notre implémentatoin). Initialement, il est rempli aléaoirement avec 7 ``couleurs'' (ou lettres). Dans deux angles opposés, il y a une huitième et une neuvième couleurs : celles des joueurs. Tour à tour, les joueurs choisissent une couleur parmi les 7. Toutes les cases de cette couleur et adjacente à la couleur du joueur (ou adjacente à une case qui vient de changer de couleur à ce tour par cette méthode) prennent désormais la couleur du joueur. Le but est de posséder plus de la moitié du plateau.
 
 \sec{Organisation du projet}
-
 %schéma objet, structures utilisées, ...
 
 
@@ -37,7 +36,7 @@ Pour obtenir ce nombre, on importe le module \texttt{stdlib}, on initialise le g
 
 Cependant, il faut bien initialiser l'aléatoire au début de la fonction principale, et pas à chaque partie. En effet, dans la suite on lancera plein de parties en même temps, qui seront donc identiques si lancées à moins d'une seconde d'intervalle.
 
-Enfin,\texttt{rand()} modulo un nombre de couleurs ne produit pas un résultat avec une probabilité parfaitement uniforme, si le nombre d'entiers accessibles par \texttt{rand()} n'est pas un multiple du nombre de couleurs. En effet, soit $d$ le nombre de couleurs. Si par exemple $k\times d - 1$ couleurs sont accessibles par \texttt{rand()}, on aura $k$ entiers dont le résultat du modulo donne 0, mais seulment $k-1$ dont le résultat donne $d-1$.
+Enfin, \texttt{rand()} modulo un nombre de couleurs ne produit pas un résultat avec une probabilité parfaitement uniforme, si le nombre d'entiers accessibles par \texttt{rand()} n'est pas un multiple du nombre de couleurs. En effet, soit $d$ le nombre de couleurs. Si par exemple $k\times d - 1$ couleurs sont accessibles par \texttt{rand()}, on aura $k$ entiers dont le résultat du modulo donne 0, mais seulment $k-1$ dont le résultat donne $d-1$.
 Cependant, vu le petit nombre de couleurs et le grand dombre d'entiers accessibles avec \texttt{rand()}, ce n'est pas un problème significatif.
 
 \question{2.2}
@@ -61,7 +60,7 @@ On crée donc une fonction \texttt{player\_choice}, qui demande à un joueur un 
 %limites? qu'est ce qu'il va pas elle pas belle ma fonction?
 
 \question{3.2}
-On implémente la fonction \texttt{int score (char * b, int color)} qui prend en argument un plateau de jeu et la couleur d'un joueur. elle se content de compter le nombre de cases de cette couleur pour calculer le score d'un joueur.
+On implémente la fonction \texttt{int score (char * b, int color)} qui prend en argument un plateau de jeu et la couleur d'un joueur. Elle se contente de compter le nombre de cases de cette couleur pour calculer le score d'un joueur.
 
 On calcule la limite de score à atteindre : si $n$ est la taille du plateau, on prend $\frac{n^2}{2}$ (arrondi à la valeur supérieure).
 
@@ -121,6 +120,11 @@ Il s'agit de la frontière de la zone occupée par le joueur.
 La stratégie consiste à maximiser cette valeur.
 
 On implémente donc la fonction \texttt{hegemony} de la même manière que le glouton, mais en ne calculant pas le score mais bien la frontière.
+
+\paragraph{Évaluation :}
+Pour évaluer cette stratégie, on la fait s'affronter 1000 fois contre \texttt{greedy}.
+
+\texttt{greedy} gagne 473 fois. \texttt{hegemony} gagne 521 fois. Il y a 6 matchs nuls.
 
 %gddhsgsrrehgdhjdhgfdffnhvjdkkdieuriodldkftrjj  hndenufic eiuhfsih
 %hudfuhfduhdfrninrnhuiudy-zuèzoivjvsggslkfffdithkvcjchxydijgog
