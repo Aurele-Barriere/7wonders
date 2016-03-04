@@ -84,6 +84,23 @@ On parcourt le plateau de jeu. Si on tombe sur une couleur à côté d'une case 
 
 On caclule le nombre de couleurs utiles. On tire un nombre aléatoire plus petit que ce nombre, et on renvoie la couleur correspondante.
 
+\sec{La loi du plus fort}
+\question{5.1}
+Pour implémenter la stratégie \texttt{greedy}, nous avons utilisé le deuxième plateau \texttt{test\_board}.
+Pour chacune des couleurs, on va copier \texttt{board} dans \texttt{test\_board} (avec la fonction \texttt{copy\_board()}). Puis on va simuler un coup du joueur en utilisant la fonction \texttt{update\_board} décrite plus tôt, sur le plateau \texttt{test\_board}. Pour chacun de ces tests, on calcule le score obtenu et on l'écrit dans un tableau.
+
+Enfin, on cherche l'indice maximum de ce tableau : c'est la couleur à jouer.
+
+%remarque : généralisation de maximisation de fonction.
+
+\question{5.2}
+Pour qu'un affrontement soit équitable, il faut alterner le premier joueur. En effet, commencer donne un avantage (pour s'en convaincre, s'imaginer le jeu à 1 ou 2 couleurs ou encore lancer des compétitions utilisant la même stratégie). On va tirer aléatoirement le premier joueur.
+
+Le côté est également important. On va donc générer seulement la moitié de la matrice, puis la répliquer. La matrice est donc symétrique suivant la diagonale qui ne contient pas les positions initiales des joueurs. 
+
+On aurait également pu faire pour chaque match le match retour, où on inverse le côté et le premier joueur.
+
+\question{5.3}
 
 
 \end{document}
