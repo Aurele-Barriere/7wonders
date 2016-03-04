@@ -46,7 +46,7 @@ int game(int print) {
   
    while(!victory(score1, score2) && !draw(score1,score2)) {
      if(printing){print_board(board);}
-     if (player) {choice =hegemony(color2);}
+     if (player) {choice =alea_useful_colors(color2);}
      else {choice = greedy(color1);}
      if (player) {update_board(color2, choice, board);}
      else {update_board(color1, choice, board);}
