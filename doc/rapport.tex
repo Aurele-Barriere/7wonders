@@ -71,6 +71,19 @@ Grâce à cette fonction, on peut donc vérifier à chaque tour si :
 Ainsi, on peut mettre des conditions d'arrêt au jeu.
 On peut également calculer le pourcentage en calculant $\frac{score \times 100}{n^2}$.
 
+\sec{La stratégie de l'aléa}
+\question{4.1}
+Dans les fichiers de strategies (\texttt{strategy.c, strategy.h}), on implémente une stratégie aléatoire : de la même manière qu'on choisissait une couleur aléatoire pour initialiser le plateau, on retourne une couleur aléatoire que le joueur artificiel va jouer.
+
+\question{4.2}
+On implémente une fonction \texttt{char alea\_useful\_colors(int player)} qui va opérer ainsi :
+
+On initialise un tableau de la taille du nombre de couleurs, initialisé avec des 0. Il contiendra des booléens qui spécifieront si une couleur est utile ou non.
+
+On parcourt le plateau de jeu. Si on tombe sur une couleur à côté d'une case occupée par le joueur, dans le tableau précédent on indiquera que cette couleur est utile (c'est à dire que le joueur progressera s'il la joue).
+
+On caclule le nombre de couleurs utiles. On tire un nombre aléatoire plus petit que ce nombre, et on renvoie la couleur correspondante.
+
 
 
 \end{document}
