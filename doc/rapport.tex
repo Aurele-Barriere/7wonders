@@ -48,6 +48,29 @@ S'il y a eu changement, il faut recommencer le parcours de la matrice.
 On pose $n$ la taille du tableau. Dans le pire cas, il faut réappliquer $n$ fois le parcours de matrice (à chaque parcours, il y a un changement). On a donc une complexité en $\mathcal{O}(n^3)$ dans le pire cas.
 %il faut détailler
 
+\question{2.3}
+%TO DO
+
+\sec{À la conquête du monde}
+\question{3.1}
+On crée donc une fonction \texttt{player\_choice}, qui demande à un joueur un caractère correspondant à une couleur. Si le caractère ne correspond pas à une de couleurs disponibles, on redemande jusqu'à obtenir un résultat convenable.
+
+%limites? qu'est ce qu'il va pas elle pas belle ma fonction?
+
+\question{3.2}
+On implémente la fonction \texttt{int score (char * b, int color)} qui prend en argument un plateau de jeu et la couleur d'un joueur. elle se content de compter le nombre de cases de cette couleur pour calculer le score d'un joueur.
+
+On calcule la limite de score à atteindre : si $n$ est la taille du plateau, on prend $\frac{n^2}{2}$ (arrondi à la valeur supérieure).
+
+Grâce à cette fonction, on peut donc vérifier à chaque tour si :
+\begin{itemize}
+\item un des joueurs a atteint la limite de score
+\item les deux joueurs ont le même score qui est égal à la limite (égalité)
+\end{itemize}
+
+Ainsi, on peut mettre des conditions d'arrêt au jeu.
+On peut également calculer le pourcentage en calculant $\frac{score \times 100}{n^2}$.
+
 
 
 \end{document}
