@@ -21,7 +21,7 @@ char alea_useful_colors(int player) {
   for (i = 0; i< BOARD_SIZE; i++) {
     for (j = 0; j< BOARD_SIZE; j++) {
       color = get_cell(i,j,board);
-      if (color>=0 && color < BOARD_SIZE) {
+      if (color>=0 && color < NB_COLORS) {
 	c = (int) color;
 	if (useful[c]==0) {
 	  if (in_board(i-1,j)) {if (get_cell(i-1,j,board) == player)  {useful[c] = 1;}}
