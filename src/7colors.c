@@ -33,7 +33,7 @@ int draw(int score1, int score2) {
 }
 
 /** Game. returns the number of the winner (1 or 2 or 0 for draw). Specify with boolean printing if the programm should print anything */
-int game(int print) {
+int game(int print, char (*strat1)(char), char (*strat2)(char)) {
   printing = print;
   int player =  rand() % 2; //which player begins
   int score1 = 0;
@@ -45,8 +45,8 @@ int game(int print) {
 
    while(!victory(score1, score2) && !draw(score1,score2)) {
      if(printing){print_board(board);}
-     if (player) {choice =starve(color2);}
-     else {choice = starve(color1);}
+     if (player) {choice =strat2(color2);}
+     else {choice = strat1(color1);}
      if (player) {update_board(color2, choice, board);}
      else {update_board(color1, choice, board);}
      player = 1-player;
@@ -70,7 +70,7 @@ int main()
   int i;
 
   for (i = 0; i<100; i++) {
-    printf("%d\n", game(0));
+    printf("%d\n", game(0,greedy,greedy));
   }
   return 0;
 }
