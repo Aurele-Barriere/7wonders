@@ -3,19 +3,19 @@
 #define STRATEGY_H
 
 /** Chooses at random between all colors */
-char alea();
+char alea(char player);
 
 /** Chosses at random between colors that are useful at this turn */
-char alea_useful_colors(int player);
+char alea_useful_colors(char player);
 
 /** Bad attempt at greedy strategy */
-char wrong_greedy(int player);
+char wrong_greedy(char player);
 
 /** Good attempt at greedy strategy */
-char greedy(int player);
+char greedy(char player);
 
 /** Ask the player his choice */
-char player_choice(int player);
+char player_choice(char player);
 
 /** Maximize the frontier */
 char hegemony(char player);

@@ -4,14 +4,14 @@
 #include "board.h"
 
 //random
-char alea () {
+char alea (char player) {
   char r =  rand() % 7;
-  if(printing){printf("Color chose by random AI : %c\n", r+97);}
+  if(printing){printf("Color chose by random AI : %c for player %c\n", r+97,player);}
   return r;
 }
 
 //random between useful colors
-char alea_useful_colors(int player) {
+char alea_useful_colors(char player) {
   //chooses at random between colors that can make any progress
   int useful[NB_COLORS] = {0};
   int i,j;
@@ -49,7 +49,7 @@ char alea_useful_colors(int player) {
 }
 
 //wrong greedy
-char wrong_greedy(int player) {
+char wrong_greedy(char player) {
   int occurrences[NB_COLORS] = {0};
   int i,j;
   char color;
@@ -82,7 +82,7 @@ char wrong_greedy(int player) {
 }
 
 //true greedy ai
-char greedy(int player) {
+char greedy(char player) {
   int i =0;
   int val[NB_COLORS] = { 0 };
   for (i = 0; i< NB_COLORS; i++) {
@@ -104,7 +104,7 @@ char greedy(int player) {
 }
 
 //ask for the player's choice
-char player_choice(int player) {
+char player_choice(char player) {
   char c;
   printf("What color do you choose, player %d?\n", player);
   printf("Must be between a-g  \n");
