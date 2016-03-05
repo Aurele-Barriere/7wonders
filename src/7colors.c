@@ -32,15 +32,6 @@ int draw(int score1, int score2) {
   return 0;
 }
 
-int other(int color) {
-  if (color == color1) {
-    return color2;
-  }
-  else {
-    return color1;
-  }
-}
-
 /** Game. returns the number of the winner (1 or 2 or 0 for draw). Specify with boolean printing if the programm should print anything */
 int game(int print) {
   printing = print;
