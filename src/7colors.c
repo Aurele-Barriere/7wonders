@@ -73,7 +73,12 @@ int main()
   int nb_games = 1;
   char (*strat1)(char);
   char (*strat2)(char);
+  int win1 = 0;
+  int win2 = 0;
+  int draws = 0;
+  int result;
 
+  //introducing the game
   printf("Welcome to the game of seven colors\n");
   printf("How many games do you want to play?\n");
   scanf("%d", &nb_games);
@@ -105,9 +110,22 @@ switch (choice2) {
   }
 
 
-
+// launching the games
   for (i = 0; i<nb_games; i++) {
-    printf("%d\n", game(strat1,strat2));
+    result = game(strat1, strat2);
+    printf("%d", result);
+    fflush(stdout); //printing results as they come
+    switch(result) {
+    case 1: win1+=1; break;
+    case 2: win2+=1; break;
+    default: draws+=1; break;
+    }
   }
+
+  //final results 
+  printf("\nPlayer 1 won %d games\n", win1);
+  printf("Player 2 won %d games\n", win2);
+  printf("There has been %d draws\n", draws);
+
   return 0;
 }
