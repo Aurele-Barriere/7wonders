@@ -168,12 +168,44 @@ char hegemony(char player) {
 // starve strategy : minimize available space of the other player
 char starve(char player) {
   int i =0;
+  int j =0;
   int val[NB_COLORS] = { 0 };
+  char color;
+  int c;
+  int useful[NB_COLORS] = { 0 };
+
   for (i = 0; i< NB_COLORS; i++) {
     copy_board();
     update_board(player, i, test_board);
     val[i] = available(test_board, other(player));
   }
+
+  //choosing only from useful colors
+  
+
+  for (i = 0; i< BOARD_SIZE; i++) {
+    for (j = 0; j< BOARD_SIZE; j++) {
+      color = get_cell(i,j,board);
+      if (color>=0 && color < NB_COLORS) {
+	c = (int) color;
+	if (useful[c]==0) {
+	  if (in_board(i-1,j)) {if (get_cell(i-1,j,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i+1,j)) {if (get_cell(i+1,j,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i,j-1)) {if (get_cell(i,j-1,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i,j+1)) {if (get_cell(i,j+1,board) == player)  {useful[c] = 1;}}
+	}
+      }
+    }
+  }
+
+  //removing useless colors
+
+  for (i=0; i<NB_COLORS; i++) {
+    if (!useful[i]) {val[i] = BOARD_SIZE*BOARD_SIZE;}
+  }
+
+
+  //now getting the min
   int min = BOARD_SIZE*BOARD_SIZE;
   char choice = 0;
   for (i=0; i<NB_COLORS; i++) {
