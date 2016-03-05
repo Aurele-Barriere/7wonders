@@ -109,6 +109,8 @@ int main()
   case 5: strat2 = starve; break;
   default : strat2 = player_choice; printing = 1; 
   }
+  
+  getchar();//cleaning buffer for player's choice
 
   // launching the games
   for (i = 0; i<nb_games; i++) {
