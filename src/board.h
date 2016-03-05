@@ -14,7 +14,7 @@ char get_cell(int x, int y, char * b) ;
 void set_cell(int x, int y, char color, char * b);
 
 /** Returns color of the other player */
-int other(int color);
+char other(char color);
 
 /** Copying board into test_board to reset testing */
 void copy_board();
@@ -41,6 +41,6 @@ int score (char * b, int color);
 int frontier (char * b, char color);
 
 /** Calculates available space of given player on a given board */
-int available (char * b, char color)
+int available (char * b, char color);
 
 #endif

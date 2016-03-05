@@ -21,7 +21,7 @@ void set_cell(int x, int y, char color, char * b)
 }
 
 //returns color of the other player
-int other(int color) {
+char other(char color) {
   if (color == color1) {
     return color2;
   }
@@ -29,7 +29,6 @@ int other(int color) {
     return color1;
   }
 }
-
 
 //copying board into test_board
 void copy_board() {
@@ -77,7 +76,6 @@ void update_board(char player, char color, char * b) {
     }
   }
   if (change) {update_board(player, color, b );}
-
 }
 
 //creates random board
