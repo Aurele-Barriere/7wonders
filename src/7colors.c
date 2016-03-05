@@ -32,7 +32,8 @@ int draw(int score1, int score2) {
   return 0;
 }
 
-/** Game. returns the number of the winner (1 or 2 or 0 for draw). Specify with boolean printing if the programm should print anything */
+
+/** Game. returns the number of the winner (1 or 2 or 0 for draw). Takes 2 strategies as arguments */
 int game(char (*strat1)(char), char (*strat2)(char)) {
   int player =  rand() % 2; //which player begins
   int score1 = 0;
@@ -100,7 +101,7 @@ int main()
   default : strat1 = player_choice; printing = 1; 
   }
 
-switch (choice2) {
+  switch (choice2) {
   case 1: strat2 = alea; break;
   case 2: strat2 = alea_useful_colors; break;
   case 3: strat2 = greedy; break;
@@ -109,8 +110,7 @@ switch (choice2) {
   default : strat2 = player_choice; printing = 1; 
   }
 
-
-// launching the games
+  // launching the games
   for (i = 0; i<nb_games; i++) {
     result = game(strat1, strat2);
     printf("%d", result);
