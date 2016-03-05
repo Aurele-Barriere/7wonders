@@ -6,19 +6,30 @@
 int printing = 1;
 
 char      board[BOARD_SIZE * BOARD_SIZE] = { 0 };
-char test_board[BOARD_SIZE * BOARD_SIZE] = { 0 }; 
+char test_board[BOARD_SIZE * BOARD_SIZE] = { 0 };
 
 //get function. b points to a board
-char get_cell(int x, int y, char * b) 
+char get_cell(int x, int y, char * b)
 {
    return b[y*BOARD_SIZE + x];
 }
 
 //set function. b points to a board
-void set_cell(int x, int y, char color, char * b) 
+void set_cell(int x, int y, char color, char * b)
 {
    b[y*BOARD_SIZE + x] = color;
 }
+
+//returns color of the other player
+int other(int color) {
+  if (color == color1) {
+    return color2;
+  }
+  else {
+    return color1;
+  }
+}
+
 
 //copying board into test_board
 void copy_board() {
@@ -32,13 +43,13 @@ void copy_board() {
 }
 
 //prints board
-void print_board(char * b) 
+void print_board(char * b)
 {
    int i, j;
    printf("Score1: %d, Score2: %d\n", score(b,color1), score(b,color2));
    printf("Frontier1: %d, Frontier2: %d\n", frontier(b,color1), frontier(b,color2));
    for (i=0; i<BOARD_SIZE; i++) {
-      for (j=0; j<BOARD_SIZE; j++) 
+      for (j=0; j<BOARD_SIZE; j++)
 	printf("%c ", get_cell(i, j, b)+97);
       printf("\n");
    }
@@ -66,7 +77,7 @@ void update_board(char player, char color, char * b) {
     }
   }
   if (change) {update_board(player, color, b );}
-  
+
 }
 
 //creates random board
@@ -122,7 +133,7 @@ int score (char * b, int color) {
 }
 
 //frontier for hegemony
-int frontier (char * b, int color) {
+int frontier (char * b, char color) {
   int f = 0;
   int in_frontier = 0;
   int i;
@@ -154,6 +165,55 @@ int frontier (char * b, int color) {
   return f;
 }
 
-
-
-
+//available space for starve strategy
+int available(char* b, char color) {
+  int matrix[BOARD_SIZE * BOARD_SIZE] = {0};
+  int av = 0;
+  int otherPlayer = other(color);
+  char change = 1;
+  int i = 0;
+  int j = 0;
+  for (i = 0; i<BOARD_SIZE; i++) {
+    for (j = 0; j<BOARD_SIZE; j++) {
+      if (get_cell(i,j,b) == color) {
+        matrix[j*BOARD_SIZE + i] = 1;
+        av += 1;
+      }
+    }
+  }
+  while (change) {
+    change = 0;
+    for (i = 0; i < BOARD_SIZE; i++) {
+      for (j = 0; j < BOARD_SIZE; j++) {
+        if (get_cell(i,j,b) != otherPlayer && !matrix[j*BOARD_SIZE + i]){
+          if (in_board(i+1, j)) {
+            if (matrix[j*BOARD_SIZE + i+1]){
+              matrix[j*BOARD_SIZE + i] = 1;
+              change = 1;
+            }
+          }
+          if (in_board(i-1, j)) {
+            if (matrix[j*BOARD_SIZE + i-1]){
+              matrix[j*BOARD_SIZE + i] = 1;
+              change = 1;
+            }
+          }
+          if (in_board(i, j+1)) {
+              if (matrix[(j+1)*BOARD_SIZE + i]) {
+                matrix[j*BOARD_SIZE + i] = 1;
+                change = 1;
+              }
+          }
+          if (in_board(i, j-1)) {
+            if (matrix[(j-1)*BOARD_SIZE + i]) {
+              matrix[j*BOARD_SIZE + i] = 1;
+              change = 1;
+            }
+          }
+        av += matrix[j*BOARD_SIZE + i];
+      }
+    }
+  }
+}
+return av;
+}

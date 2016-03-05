@@ -17,7 +17,7 @@ char alea_useful_colors(int player) {
   int i,j;
   char color;
   int c;
-  
+
   for (i = 0; i< BOARD_SIZE; i++) {
     for (j = 0; j< BOARD_SIZE; j++) {
       color = get_cell(i,j,board);
@@ -37,12 +37,12 @@ char alea_useful_colors(int player) {
     if (useful[i]) {sum++;}
   }
   int r =  rand() % sum;
-  
+
   char decision;
   int choice = -1;
   for (i=0; i< NB_COLORS; i++) {
     if (useful[i]) {choice++;}
-    if (choice == r) {decision = (char) i;break;} 
+    if (choice == r) {decision = (char) i;break;}
   }
   if(printing){printf("\nColor chose by random_useful AI : %c\n", i+97);}
   return decision;
@@ -54,18 +54,18 @@ char wrong_greedy(int player) {
   int i,j;
   char color;
   int c;
-  
+
   for (i = 0; i< BOARD_SIZE; i++) {
     for (j = 0; j< BOARD_SIZE; j++) {
       color = get_cell(i,j,board);
       if (color>=0 && color < BOARD_SIZE) {
 	c = (int) color;
-	
+
 	if (in_board(i-1,j)) {if (get_cell(i-1,j,board) == player)  {occurrences[c]++;}}
 	if (in_board(i+1,j)) {if (get_cell(i+1,j,board) == player)  {occurrences[c]++;}}
 	if (in_board(i,j-1)) {if (get_cell(i,j-1,board) == player)  {occurrences[c]++;}}
 	if (in_board(i,j+1)) {if (get_cell(i,j+1,board) == player)  {occurrences[c]++;}}
-	
+
       }
     }
   }
@@ -90,7 +90,7 @@ char greedy(int player) {
     update_board(player, i, test_board);
     val[i] = score(test_board, player);
   }
-  
+
   int max = 0;
   char choice = 0;
   for (i=0; i<NB_COLORS; i++) {
@@ -117,13 +117,13 @@ char player_choice(int player) {
 }
 
 //max frontier
-char hegemony(int player) {
+char hegemony(char player) {
   int i =0;
   int val[NB_COLORS] = { 0 };
   for (i = 0; i< NB_COLORS; i++) {
     copy_board();
     update_board(player, i, test_board);
-    val[i] = score(test_board, player);
+    val[i] = frontier(test_board, player);
   }
   int max = 0;
   char choice = 0;
@@ -133,6 +133,27 @@ char hegemony(int player) {
       choice = i;
     }
   }
-  if(printing){printf("color chose by hegemony AI : %c\n", choice +97);}
+  if(printing){printf("color chosen by hegemony AI : %c\n", choice +97);}
+  return choice;
+}
+
+// starve strategy : minimize available space of the other player
+char starve(char player) {
+  int i =0;
+  int val[NB_COLORS] = { 0 };
+  for (i = 0; i< NB_COLORS; i++) {
+    copy_board();
+    update_board(player, i, test_board);
+    val[i] = available(test_board, other(player));
+  }
+  int min = 0;
+  char choice = 0;
+  for (i=0; i<NB_COLORS; i++) {
+    if (val[i]<=min) {
+      min = val[i];
+      choice = i;
+    }
+  }
+  if(printing){printf("color chosen by starve AI : %c\n", choice +97);}
   return choice;
 }

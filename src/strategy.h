@@ -18,7 +18,9 @@ char greedy(int player);
 char player_choice(int player);
 
 /** Maximize the frontier */
-char hegemony(int player);
+char hegemony(char player);
 
+/** Minimize available space of the other player */
+char starve(char player);
 
 #endif
