@@ -174,7 +174,7 @@ char starve(char player) {
     update_board(player, i, test_board);
     val[i] = available(test_board, other(player));
   }
-  int min = 0;
+  int min = BOARD_SIZE*BOARD_SIZE;
   char choice = 0;
   for (i=0; i<NB_COLORS; i++) {
     if (val[i]<=min) {
