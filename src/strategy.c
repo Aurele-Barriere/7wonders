@@ -119,12 +119,40 @@ char player_choice(char player) {
 //max frontier
 char hegemony(char player) {
   int i =0;
+  int j =0;
+  char color;
+  int c;
   int val[NB_COLORS] = { 0 };
   for (i = 0; i< NB_COLORS; i++) {
     copy_board();
     update_board(player, i, test_board);
     val[i] = frontier(test_board, player);
   }
+  //choosing only from useful colors
+  int useful[NB_COLORS] = { 0 };
+
+  for (i = 0; i< BOARD_SIZE; i++) {
+    for (j = 0; j< BOARD_SIZE; j++) {
+      color = get_cell(i,j,board);
+      if (color>=0 && color < NB_COLORS) {
+	c = (int) color;
+	if (useful[c]==0) {
+	  if (in_board(i-1,j)) {if (get_cell(i-1,j,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i+1,j)) {if (get_cell(i+1,j,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i,j-1)) {if (get_cell(i,j-1,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i,j+1)) {if (get_cell(i,j+1,board) == player)  {useful[c] = 1;}}
+	}
+      }
+    }
+  }
+
+  //removing useless colors
+
+  for (i=0; i<NB_COLORS; i++) {
+    val[i] *= useful[i];
+  }
+
+  //now getting the max out of it
   int max = 0;
   char choice = 0;
   for (i=0; i<NB_COLORS; i++) {
