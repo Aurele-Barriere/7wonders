@@ -33,8 +33,7 @@ int draw(int score1, int score2) {
 }
 
 /** Game. returns the number of the winner (1 or 2 or 0 for draw). Specify with boolean printing if the programm should print anything */
-int game(int print, char (*strat1)(char), char (*strat2)(char)) {
-  printing = print;
+int game(char (*strat1)(char), char (*strat2)(char)) {
   int player =  rand() % 2; //which player begins
   int score1 = 0;
   int score2 = 0;
@@ -66,11 +65,49 @@ int game(int print, char (*strat1)(char), char (*strat2)(char)) {
 /** Program entry point */
 int main()
 {
+  printing = 0; //it will change if the user plays 
   srand(time(NULL)); //initializing random
   int i;
+  int choice1 = 0;
+  int choice2 = 0;
+  int nb_games = 1;
+  char (*strat1)(char);
+  char (*strat2)(char);
 
-  for (i = 0; i<100; i++) {
-    printf("%d\n", game(0,greedy,greedy));
+  printf("Welcome to the game of seven colors\n");
+  printf("How many games do you want to play?\n");
+  scanf("%d", &nb_games);
+  printf("\n%d games will be played\nChoose first strategy :\n1:alea\n2:alea_useful_colors\n3:greedy\n4:hegemony\n5:starve\n6:player_choice\n", nb_games);
+  scanf("%d", &choice1);
+  printf("\nChoose second strategy :\n1:alea\n2:alea_useful_colors\n3:greedy\n4:hegemony\n5:starve\n6:player_choice\n");
+  scanf("%d", &choice2);
+  if (choice1<1 || choice1>6 || choice2<1 || choice2>6) {
+    printf("Invalid choices. No games will be played\n");
+    return 0;
+  }
+
+  switch (choice1) {
+  case 1: strat1 = alea; break;
+  case 2: strat1 = alea_useful_colors; break;
+  case 3: strat1 = greedy; break;
+  case 4: strat1 = hegemony; break;
+  case 5: strat1 = starve; break;
+  default : strat1 = player_choice; printing = 1; 
+  }
+
+switch (choice2) {
+  case 1: strat2 = alea; break;
+  case 2: strat2 = alea_useful_colors; break;
+  case 3: strat2 = greedy; break;
+  case 4: strat2 = hegemony; break;
+  case 5: strat2 = starve; break;
+  default : strat2 = player_choice; printing = 1; 
+  }
+
+
+
+  for (i = 0; i<nb_games; i++) {
+    printf("%d\n", game(strat1,strat2));
   }
   return 0;
 }
