@@ -1,5 +1,5 @@
 /*
-  Aurele Barriere & Nathan Tommasset
+  Aurele Barriere & Nathan Thomasset
   ARCSYS 2
 */
 
