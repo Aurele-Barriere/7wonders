@@ -116,7 +116,7 @@ void set_sym_board() {
 }
 
 //calculates the score of a player on a board
-int score (char * b, int color) {
+int score (char * b, char color) {
   int i;
   int j;
   int s = 0;
