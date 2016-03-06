@@ -7,15 +7,18 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 
-\def\question#1{\subsection*{#1}}
-\def\sec#1{\section*{#1}}
+\def\question#1{\subsection{#1}}
+\def\sec#1{\section{#1}}
 
 \title{Les 7 merveilleuses merveilles du merveilleux monde des 7 merveilleuses couleurs}
 \author{Aurèle Barrière \& Nathan Tomasset}
 \date{8 mars 2016}
+\setcounter{secnumdepth}{0} %for tableofcontents
 
 \begin{document}
 \maketitle
+\tableofcontents
+\newpage
 
 \sec{Intoduction}
 Nous présentons dans ce projet une implémentation du jeu des 7 couleurs dont les règles seront décrites plus bas. L'enjeu est d'implémenter en C le jeu, puis de créer des stratégies.
