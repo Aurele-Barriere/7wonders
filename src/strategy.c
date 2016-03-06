@@ -36,7 +36,9 @@ char alea_useful_colors(char player) {
   for (i = 0; i< NB_COLORS; i++) {
     if (useful[i]) {sum++;}
   }
-  int r =  rand() % sum;
+  
+  int r = 0;
+  if (sum>0) {r =  rand() % sum;}
 
   char decision;
   int choice = -1;
