@@ -3,15 +3,22 @@ Aurèle Barrière & Nathan Thomasset
 ARCSYS 2 
 
 
-TO DO:
-- finish report
-- more strategies?
-- asbstract maximisation strategy -> maybe not useful
+This directory contains our project for ARCSYS2.
+Run 'make' in the src/ directory, then execute 7colors.
+You will be asked a number of games and what strategy to use.
+If you use player's choice, the board will be printe each turn.
+At the end, you will see the number of games won for each player.
+
+For the report, see the doc/ directory. You can run make.sh to compile it, but a pre-compiled .pdf is included.
 
 
 
-FIXED:
-- make tournaments -> see below
-- the game doesn't end on a draw -> should be corrected
-- when doing tournaments, the same result happens again and again for a while. why? maybe the initialization of random with time. -> that was it. fixed
-- hegemony amelioration -> starve is good
+$ cd src/
+$ make
+$ ./7colors
+
+
+Dependencies :
+	     gcc
+	     make
+	     pdflatex (if you want to compile the report)

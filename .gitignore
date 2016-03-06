@@ -6,3 +6,7 @@
 !*.sh
 *.log
 *.toc
+*~
+*.aux
+*.out
+7colors
