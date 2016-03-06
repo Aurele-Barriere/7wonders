@@ -23,4 +23,16 @@ char hegemony(char player);
 /** Minimize available space of the other player */
 char starve(char player);
 
+/** Given a function to maximize, chooses the best letter */
+char general(int (*f) (char *, char), char player);
+
+/** Greedy strategy with general function */
+char general_greedy(char player);
+
+/** Hegemony strategy with general function */
+char general_hegemony(char player);
+
+/** Starve strategy with general function */
+char general_starve(char player);
+
 #endif

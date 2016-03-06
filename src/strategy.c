@@ -219,3 +219,65 @@ char starve(char player) {
   if(printing){printf("color chosen by starve AI : %c\n", choice +97);}
   return choice;
 }
+
+
+//general strategy : takes a function f to maximize
+char general(int (*f) (char *, char), char player) {
+  int i =0;
+  int j =0;
+  char color;
+  int c;
+  int val[NB_COLORS] = { 0 };
+  for (i = 0; i< NB_COLORS; i++) {
+    copy_board();
+    update_board(player, i, test_board);
+    val[i] = f(test_board, player);
+  }
+  //choosing only from useful colors
+  int useful[NB_COLORS] = { 0 };
+
+  for (i = 0; i< BOARD_SIZE; i++) {
+    for (j = 0; j< BOARD_SIZE; j++) {
+      color = get_cell(i,j,board);
+      if (color>=0 && color < NB_COLORS) {
+	c = (int) color;
+	if (useful[c]==0) {
+	  if (in_board(i-1,j)) {if (get_cell(i-1,j,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i+1,j)) {if (get_cell(i+1,j,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i,j-1)) {if (get_cell(i,j-1,board) == player)  {useful[c] = 1;}}
+	  if (in_board(i,j+1)) {if (get_cell(i,j+1,board) == player)  {useful[c] = 1;}}
+	}
+      }
+    }
+  }
+
+  //removing useless colors
+
+  for (i=0; i<NB_COLORS; i++) {
+    val[i] *= useful[i];
+  }
+
+  //now getting the max out of it
+  int max = 0;
+  char choice = 0;
+  for (i=0; i<NB_COLORS; i++) {
+    if (val[i]>=max) {
+      max = val[i];
+      choice = i;
+    }
+  }
+  if(printing){printf("color chosen by hegemony AI : %c\n", choice +97);}
+  return choice;
+}
+
+char general_greedy(char player) {
+  return general(score, player);
+}
+
+char general_hegemony(char player) {
+  return general(frontier, player);
+}
+
+char general_starve(char player) {
+  return general(personal_space, player);
+}

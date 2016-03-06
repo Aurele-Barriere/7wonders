@@ -215,3 +215,8 @@ int available(char* b, char color) {
 }
 return av;
 }
+
+
+int personal_space(char * b, char color) {
+  return ((BOARD_SIZE*BOARD_SIZE) - available(b, other(color)));
+}

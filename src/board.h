@@ -43,4 +43,8 @@ int frontier (char * b, char color);
 /** Calculates available space of given player on a given board */
 int available (char * b, char color);
 
+/** Personal space to maximize */
+int personal_space (char * b, char color);
+
+
 #endif
