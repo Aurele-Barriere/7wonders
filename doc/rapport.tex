@@ -156,12 +156,21 @@ La stratégie consiste à maximiser cette valeur.
 
 On implémente donc la fonction \texttt{hegemony} de la même manière que le glouton, mais en ne calculant pas le score mais bien la frontière.
 
-\paragraph{Vers une stratégie générale :} On constate que l'implémentation ressemble fortement à celle de \texttt{greedy} : il suffit de changer la fonction à maximiser. Avec l'ordre supérieur, on aurait pu avoir une fonction qui prend en argument une fonction à maximiser et renvoie la couleur à jouer pour maximiser cette fonction (\texttt{score} pour \texttt{greedy} et \texttt{frontier} pour \texttt{hegemony}). 
+
 
 \paragraph{Évaluation :}
 Pour évaluer cette stratégie, on la fait s'affronter 1000 fois contre \texttt{greedy}.
 
 \texttt{greedy} gagne 996 fois. \texttt{hegemony} gagne 4 fois. 
+
+\sec{Stratégie générale} 
+On constate que les implémentations de \texttt{starve} ou \texttt{hegemony} ressemblent fortement à celle de \texttt{greedy} : il suffit de changer la fonction à maximiser. Avec l'ordre supérieur, on peut avoir une fonction qui prend en argument une fonction à maximiser et renvoie la couleur à jouer pour maximiser cette fonction (\texttt{score} pour \texttt{greedy} et \texttt{frontier} pour \texttt{hegemony} par exemple). Il faut de plus que cette fonction ne choisisse que parmi les couleurs utiles (qui font avancer le score du joueur lorsque c'est possible), pour se garantir de la terminaison d'une partie.
+
+On implémente donc la fonction \texttt{char general(int (*f) (char *, char), char player)}. Elle prend en argument une fonction à maximiser (\texttt{score}, \texttt{frontier} ou \texttt{personal\_space}) et un joueur et renvoie la lettre à jouer. 
+
+Implémenter une stratégie se fait dès lors en 1 ligne :\\
+\texttt{char general\_greedy(char player) \{ return general(score, player); \}}
+
 
 \sec{Tournois}
 Dans cette section, nous comparerons les différentes stratégies en organisant des tournois de 100 parties entre chaque paire de stratégies.\\
