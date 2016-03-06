@@ -127,7 +127,6 @@ Pour chacune des couleurs, on va copier \texttt{board} dans \texttt{test\_board}
 
 Enfin, on cherche l'indice maximum de ce tableau : c'est la couleur à jouer.
 
-%remarque : généralisation de maximisation de fonction.
 
 \question{5.2}
 Pour qu'un affrontement soit équitable, il faut alterner le premier joueur. En effet, commencer donne un avantage (pour s'en convaincre, s'imaginer le jeu à 1 ou 2 couleurs ou encore lancer des compétitions utilisant la même stratégie). On va tirer aléatoirement le premier joueur. Avec un grand nombre de parties, on devrait tendre vers un résultat équitable.
@@ -145,6 +144,8 @@ Ensuite, on fait s'affronter en 100 parties le joueur \texttt{alea\_useful} et l
 
 Le joueur \texttt{greedy} les a toutes remportées.
 
+Plus de résultats seront donnés dans la section Tournois.
+
 \sec{Les nombreuses huitièmes merveilles du monde}
 
 \question{6.1}
@@ -154,6 +155,8 @@ Il s'agit de la frontière de la zone occupée par le joueur.
 La stratégie consiste à maximiser cette valeur.
 
 On implémente donc la fonction \texttt{hegemony} de la même manière que le glouton, mais en ne calculant pas le score mais bien la frontière.
+
+\paragraph{Vers une stratégie générale :} On constate que l'implémentation ressemble fortement à celle de \texttt{greedy} : il suffit de changer la fonction à maximiser. Avec l'ordre supérieur, on aurait pu avoir une fonction qui prend en argument une fonction à maximiser et renvoie la couleur à jouer pour maximiser cette fonction (\texttt{score} pour \texttt{greedy} et \texttt{frontier} pour \texttt{hegemony}). 
 
 \paragraph{Évaluation :}
 Pour évaluer cette stratégie, on la fait s'affronter 1000 fois contre \texttt{greedy}.
