@@ -5,6 +5,7 @@
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{fullpage}
 \usepackage{graphicx}
+\usepackage{hyperref}
 
 \def\question#1{\subsection*{#1}}
 \def\sec#1{\section*{#1}}
@@ -30,7 +31,7 @@ Le projet est découpé de la manière suivante :
 Dans un fichier header \texttt{defines.h}, on déclare les constantes pour le jeu : taille du plateau, nombre de couleurs, couleurs des joueurs. Ce fichier sera à inclure dans tous les fichiers utilisant ces constantes.
 L'avantage est de pouvoir utiliser ces constantes dans tout fichier. Il faut cependant recompiler d'autres fichiers lorsqu'on change celui-ci. Ainsi, les variables globales qui sont susceptibles de changer seront déclarées globalement ailleurs.
 
-Dans un fichier \texttt{bord.c}, accompagné de son header \texttt{board.h}, on déclarera globalement les plateaux (le plateau réel, et un autre utilisé pour simuler des coups). On mettra également toutes les fonctions nécessaires à manipuler ces tableaux : \texttt{set, get} pour manipuler les valeurs, \texttt{update\_board} pour mettre ç jour un plateau après un coup, ainsi que les calculs de score ou de frontières par exemple.
+Dans un fichier \texttt{board.c}, accompagné de son header \texttt{board.h}, on déclarera globalement les plateaux (le plateau réel, et un autre utilisé pour simuler des coups). On mettra également toutes les fonctions nécessaires à manipuler ces tableaux : \texttt{set, get} pour manipuler les valeurs, \texttt{update\_board} pour mettre ç jour un plateau après un coup, ainsi que les calculs de score ou de frontières par exemple.
 
 Dans un fichier \texttt{strategy.c}, accompagné de son module \texttt{strategy.h}, on déclare toutes les fonction qui prennent en argument un joueur, et retournent le coup à jouer en suivant une certaine stratégie : aléatoire, gloutonne, hégémonique...
 
@@ -60,13 +61,27 @@ S'il y a eu changement, il faut recommencer le parcours de la matrice.
 On pose $n$ la taille du tableau. Dans le pire cas, il faut réappliquer $n^2$ fois le parcours de matrice : à chaque parcours, il y a un changement. On a donc une complexité en $\mathcal{O}(n^4)$ dans le pire cas.
 
 Montrons qu'il y a des fois où on doit réappliquer le parcours $\mathcal{O}(n^2)$ fois :
-%serpent
 
-Et on ne peut pas l'appli
+Dans le cas d'un serpent (voir \textsc{Figure }\ref{serpent}), si on applique l'algorithme depuis la case en bas à droite, chaque itération ne va colorier qu'une seule nouvelle case, puis se rappeler. Il va donc y avoir autant d'appels récursifs que de cases à colorier. Ce nombre de cases est un $\mathcal{O}(n^2)$ : environ la moitié de la matrice.
+
+\begin{figure}
+\center
+\includegraphics[scale = 0.6]{serpent.png}
+\caption{Un exemple de cas pathologique pour notre algorithme}
+\label{serpent}
+\end{figure}
+
+Et on ne peut pas l'appliquer plus de $n^2$ fois : à chaque appel, on a changé la matrice donc on a ajouté au moins une case.
+
+On en déduit que la complexité au pire de cette fonction est du $\mathcal{O}(n^4)$, où $n$ est la taille du plateau de jeu.
 
 
 \question{2.3}
-%TO DO
+
+On aurait pu implémenter une meilleure fonction de remplissage (voir \href{https://en.wikipedia.org/wiki/Flood_fill}{Flood Fill Algorithms}(lien externe)). Un des algorithmes consiste à récursivement regarder de chaque côté des cases atteintes si la case voisine est non coloriée et accessible.
+
+On aurait ainsi pu réduire la complexité au pire à du $\mathcal{O}(n^2)$.
+
 
 \sec{À la conquête du monde}
 \question{3.1}
