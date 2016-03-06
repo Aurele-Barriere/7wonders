@@ -7,7 +7,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 
-\def\question#1{\subsection{#1}}
+\def\question#1{\subsection*{#1}}
 \def\sec#1{\section{#1}}
 
 \title{Les 7 merveilleuses merveilles du merveilleux monde des 7 merveilleuses couleurs}
@@ -40,8 +40,8 @@ Dans un fichier \texttt{strategy.c}, accompagné de son module \texttt{strategy.
 
 Enfin, dans un fichier \texttt{7colors.c}, on créera la fonction de jeu, et une fonction principale qui l'appelle un certain nombre de fois.
 
+\paragraph{Remarque :} Nous avons choisi de ne pas redéfinir de types. En effet, nous aurions pu utiliser des structures pour les couleurs, les plateaux et les joueurs. Mais finalement, chacune d'entre elle ne demande rien de plus que le type de base utilisé : une couleur n'est rien de plus qu'un \texttt{char} (on affiche des lettres), un joueur n'est rien de plu qu'une autre couleur, et un plateau n'est qu'une matrice de couleurs (un vecteur de vecteurs de \texttt{char}). Renommer ces types est finalement moins intuitif que les utiliser ainsi.
 
-%schéma objet, structures utilisées, ...
 
 
 \sec{Voir le monde en 7 couleurs}
@@ -203,6 +203,15 @@ Ensuite, \texttt{greedy} ne laisse gagner personne d'autre qe \texttt{starve}.
 Enfin, la stratégie \texttt{alea} n'est vraiment pas efficace et perd presque tout le temps. 
 
 \sec{Synthèse}
+Ce projet fut pour nous l'occasion de nous intéresser à plusieurs choses.
+
+Dans un premier temps, il fallait se fixer une architecture générale pour le projet. L'organisation en différents modules s'est révélée efficace.
+
+Ensuite, le projet a soulevé des questions d'ordre algorithmiques (algorithmes de remplissage par exemple). Nous ne nous sommes que peu intéressé à la question de la complexité (seulement pour la mise à jour de plateau), cela ne nous semblait pas essentiel : chacune des stratégies peut être lancée une centine de fois dans un temps raisonnable (moins d'une minute). La conception de stratégies fut une partie importante de notre projet.
+
+Cela fut également l'occasion de s'intéresser à l'ordre supérieur en C.
+
+
 
 \sec{Bibliographie}
 %j'ai pas utilisé grand chose moi. si toi t'as d'autres trucs, rajoute les
