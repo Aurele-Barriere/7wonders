@@ -139,7 +139,34 @@ On implémente donc la fonction \texttt{hegemony} de la même manière que le gl
 \paragraph{Évaluation :}
 Pour évaluer cette stratégie, on la fait s'affronter 1000 fois contre \texttt{greedy}.
 
-\texttt{greedy} gagne 473 fois. \texttt{hegemony} gagne 521 fois. Il y a 6 matchs nuls.
+\texttt{greedy} gagne 996 fois. \texttt{hegemony} gagne 4 fois. 
+
+\sec{Tournois}
+Dans cette section, nous comparerons les différentes stratégies en organisant des tournois de 100 parties entre chaque paire de stratégies.\\
+
+
+\begin{tabular}{l|c|c|c|c|c|r}
+strategie VS & \texttt{alea} & \texttt{alea\_useful} & \texttt{greedy} & \texttt{hegemony} & \texttt{starve} & Total\\
+\hline
+\texttt{alea} & X & 0 & 0 & 3 & 0 & 3\\
+\hline
+\texttt{alea\_useful\_colors} & 100 & X & 0 & 49 & 0 & 149\\
+\hline
+\texttt{greedy} & 100 & 100 & X & 100 & 31 & 331\\
+\hline
+\texttt{hegemony} & 97 & 51 & 0 & X & 0 & 148\\
+\hline
+\texttt{starve} & 100 & 100 & 68 & 100 & X & 368\\
+\hline
+\end{tabular}\\
+
+On constate que \texttt{starve} est la meilleure stratégie (elle gagne même contre \texttt{greedy} 68 à 31, et gagne 100 à 0 contre toutes les autres).
+
+Ensuite, \texttt{greedy} ne laisse gagner personne d'autre qe \texttt{starve}.
+
+\texttt{hegemony} n'est pas très efficace, puisqu'elle est presque équivalente à \texttt{alea\_useful\_colors}.
+
+Enfin, la stratégie \texttt{alea} n'est vraiment pas efficace et perd presque tout le temps. 
 
 %gddhsgsrrehgdhjdhgfdffnhvjdkkdieuriodldkftrjj  hndenufic eiuhfsih
 %hudfuhfduhdfrninrnhuiudy-zuèzoivjvsggslkfffdithkvcjchxydijgog
