@@ -97,7 +97,6 @@ void set_random_board() {
 void set_sym_board() {
   int i, j;
   int r = 0;
-  //RAND_MAX = NB_COLORS;
   //first half
   for (i = 0; i< BOARD_SIZE; i++){
     for (j=i; j < BOARD_SIZE; j++) {
