@@ -143,7 +143,7 @@ char maximize(int (*f) (char *, char), char player) {
       choice = i;
     }
   }
-  if(printing){printf("color chosen by hegemony AI : %c\n", choice +97);}
+  if(printing){printf("color chosen by AI : %c\n", choice +97);}
   return choice;
 }
 
