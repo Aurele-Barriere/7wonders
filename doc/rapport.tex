@@ -179,6 +179,14 @@ Implémenter une stratégie se fait dès lors en 1 ligne :\\
 \question{7.2}
 On implémente la stratégie hybride \texttt{greedymony}. Il s'agit pour elle de maximiser la somme du score et de la frontière. Elle bat toutes les stratégies implémentées jusqu'à présent.
 
+En effet, le problème de \texttt{hegemony} est à la fin du jeu : toutes les zones entourées par notre couleur mais qui ne sont pas de notre couleur ne seront pas coloriées. En effet, les colorier réduirait notre zone, alors qu'on a intérêt à la prendre.
+
+Et le problème de \texttt{greedy} est qu'il favorise souvent la prise de cases qui ne lui permettent pas de gagner par rapport à son adversaire puisqu'elles lui étaient déjà inaccessibles.
+
+La combinaison des deux est donc particulièrement efficace.
+
+Si on fait un mélange entre \texttt{hegemony} et \texttt{starve}, on n'obtient pas une stratégie aussi forte : on accorde trop d'intérêt aux zones qui ne sont pas de notre couleurs mais entourées par notre couleur puisqu'elles augmentent beaucoup la frontière et la zone personnelle, et ne seront donc jamais coloriées.
+
 \sec{Tournois}
 Dans cette section, nous comparerons les différentes stratégies en organisant des tournois de 100 parties entre chaque paire de stratégies.\\
 
@@ -200,9 +208,11 @@ strategie VS & \texttt{alea} & \texttt{alea\_useful} & \texttt{greedy} & \texttt
 \hline
 \end{tabular}\\
 
-On constate que \texttt{starve} est la meilleure stratégie (elle gagne même contre \texttt{greedy} 68 à 31, et gagne 100 à 0 contre toutes les autres).
+On constate que \texttt{greedymony} est la meilleure stratégie.
 
-Ensuite, \texttt{greedy} ne laisse gagner personne d'autre qe \texttt{starve}.
+Ensuite, \texttt{starve} est la seconde meilleure stratégie (elle gagne même contre \texttt{greedy} 68 à 31, et gagne 100 à 0 contre toutes les autres sauf \texttt{greedymony}).
+
+Ensuite, \texttt{greedy} ne laisse gagner personne d'autre que \texttt{starve} et \texttt{greedymony}.
 
 \texttt{hegemony} n'est pas très efficace, puisqu'elle est presque équivalente à \texttt{alea\_useful\_colors}.
 
