@@ -27,7 +27,7 @@ Nous proposerons une implémentation organisée, puis différentes stratégies. 
 
 
 \question{Règles du jeu}
-Le jeu se présente comme un tableau carré de trente cases de côté (ce nombre est tout à fait arbitraire et paramétrable dans notre implémentation). Initialement, il est rempli aléaoirement avec sept ``couleurs'' (ou lettres). Dans deux angles opposés, il y a une huitième et une neuvième couleurs : celles des joueurs. Tour à tour, les joueurs choisissent une couleur parmi les sept premières. Toutes les cases de cette couleur et adjacente à la couleur du joueur (ou adjacente à une case qui vient de changer de couleur à ce tour par cette méthode) prennent désormais la couleur du joueur. Le but est de posséder plus de la moitié du plateau.
+Le jeu se présente comme un tableau carré de trente cases de côté (ce nombre est tout à fait arbitraire et paramétrable dans notre implémentation). Initialement, il est rempli aléatoirement avec sept ``couleurs'' (ou lettres). Dans deux angles opposés, il y a une huitième et une neuvième couleurs : celles des joueurs. Tour à tour, les joueurs choisissent une couleur parmi les sept premières. Toutes les cases de cette couleur et adjacente à la couleur du joueur (ou adjacente à une case qui vient de changer de couleur à ce tour par cette méthode) prennent désormais la couleur du joueur. Le but est de posséder plus de la moitié du plateau.
 
 \sec{Organisation du projet}
 Le projet est découpé de la manière suivante :
@@ -91,14 +91,14 @@ On aurait ainsi pu réduire la complexité au pire à du $\mathcal{O}(n^2)$.
 \question{3.1}
 On crée donc une fonction \texttt{player\_choice}, qui demande à un joueur un caractère correspondant à une couleur. Si le caractère ne correspond pas à une des couleurs disponibles, on redemande jusqu'à obtenir un résultat convenable.
 
-Nous n'avons pas ajouté de couleurs ou d'interface graphique. Il aurait été possible d'ajouter de la couleurs dans les fonctions \texttt{printf} de \texttt{print\_board} avec les codes couleurs ANSI. Mais il aurait fallu définir la couleur de chaque caractère. Dans notre programme, si on veut ajouter des couleurs, il n'y a qu'à modifer le \texttt{\#define NB\_COLORS} et le programme utilisera tout seul les prochaines lettres de l'alphabet.
+Nous n'avons pas ajouté de couleurs ou d'interface graphique. Il aurait été possible d'ajouter de la couleur dans les fonctions \texttt{printf} de \texttt{print\_board} avec les codes couleurs ANSI. Mais il aurait fallu définir la couleur de chaque caractère. Dans notre programme, si on veut ajouter des couleurs, il n'y a qu'à modifer le \texttt{\#define NB\_COLORS} et le programme utilisera tout seul les prochaines lettres de l'alphabet.
 
 %limites? qu'est ce qu'il va pas elle pas belle ma fonction?
 
 \question{3.2}
 On implémente la fonction \texttt{int score (char * b, int color)} qui prend en argument un plateau de jeu et la couleur d'un joueur. Elle se contente de compter le nombre de cases de cette couleur pour calculer le score d'un joueur.
 
-On calcule la limite de score à atteindre : si $n$ est la taille du plateau, on prend $\frac{n^2}{2}$ (arrondi à la valeur supérieure).
+On calcule la limite de score à atteindre : si $n$ est la taille du plateau, on prend $\frac{n^2}{2}$ (arrondi à la valeur inférieure : cela ne pose pas de problème, dans le cas d'un plateau avec un nombre de cases impaires, il ne peut pas y avoir d'égalité).
 
 Grâce à cette fonction, on peut donc vérifier à chaque tour si :
 \begin{itemize}
@@ -169,15 +169,15 @@ Pour évaluer cette stratégie, on la fait jouer 1000 fois contre \texttt{greedy
 
 \question{Bonus : stratégie \texttt{starve}}
 
-Devant l'échec d'\texttt{hegemony} malgré ce qui nous semblait une bonne idée, à savoir chercher à s'étendre au maximum pour ``affamer'' l'adversaire en l'empêchant d'accéder à certaines cases qui sont alors garanties de nous revenir, nous avons cherché à mettre au point une nouvelle stratégie. L'idée est de chercher à maximiser non pas sa frontière ou son score mais l'``espace personnel'', à savoir l'ensemble des cases inaccessibles par l'adversaire. Pour cela, on définit une fonction \texttt{available} qui calcule le nombre de cases accessibles pour un joueur. Il s'agit d'appliquer un algorithme de remplissage : à l'initialisation, seule les cases possédées sont accessibles, on re-parcourt ensuite tant que nécessaire l'ensemble des cases pour ajouter au cases accessibles les cases non possédées par l'adversaire et dont un voisin est accessible, et ce jusqu'à stabilisation. On calcule ensuite l'espace personnel d'un joueur comme le nombre total de cases auquel on retire le nombre de cases accessibles par l'adversaire. La stratégie \texttt{starve} consiste enfin à maximiser cet espace personnel de la même manière que \texttt{greedy} maximise le score du joueur.
+Devant l'échec d'\texttt{hegemony} malgré ce qui nous semblait une bonne idée, à savoir chercher à s'étendre au maximum pour ``affamer'' l'adversaire en l'empêchant d'accéder à certaines cases qui sont alors garanties de nous revenir, nous avons cherché à mettre au point une nouvelle stratégie. L'idée est de chercher à maximiser non pas sa frontière ou son score mais l'``espace personnel'', à savoir l'ensemble des cases inaccessibles par l'adversaire. Pour cela, on définit une fonction \texttt{available} qui calcule le nombre de cases accessibles pour un joueur. Il s'agit d'appliquer un algorithme de remplissage : à l'initialisation, seules les cases possédées sont accessibles, on re-parcourt ensuite tant que nécessaire l'ensemble des cases pour ajouter aux cases accessibles les cases non possédées par l'adversaire et dont un voisin est accessible, et ce jusqu'à stabilisation. On calcule ensuite l'espace personnel d'un joueur comme le nombre total de cases auquel on retire le nombre de cases accessibles par l'adversaire. La stratégie \texttt{starve} consiste enfin à maximiser cet espace personnel de la même manière que \texttt{greedy} maximise le score du joueur.
 
 \sec{Stratégie générale}
 On constate que les implémentations de \texttt{starve} ou \texttt{hegemony} ressemblent fortement à celle de \texttt{greedy} : il suffit de changer la fonction à maximiser. Avec l'ordre supérieur, on peut avoir une fonction qui prend en argument une fonction à maximiser et renvoie la couleur à jouer pour maximiser cette fonction (\texttt{score} pour \texttt{greedy} et \texttt{frontier} pour \texttt{hegemony} par exemple). Il faut de plus que cette fonction ne choisisse que parmi les couleurs utiles (qui font avancer le score du joueur lorsque c'est possible), pour garantir la terminaison d'une partie.
 
-On implémente donc la fonction \texttt{char general(int (*f) (char *, char), char player)}. Elle prend en argument une fonction à maximiser (\texttt{score}, \texttt{frontier} ou \texttt{personal\_space}) et un joueur et renvoie la couleur à jouer.
+On implémente donc la fonction \texttt{char maximize(int (*f) (char *, char), char player)}. Elle prend en argument une fonction à maximiser (\texttt{score}, \texttt{frontier} ou \texttt{personal\_space}) et un joueur et renvoie la couleur à jouer.
 
 Implémenter une stratégie se fait dès lors en une ligne :\\
-\texttt{char general\_greedy(char player) \{ return general(score, player); \}}
+\texttt{char greedy(char player) \{ return maximize(score, player); \}}
 
 
 \sec{Le pire du monde merveilleux des 7 couleurs}
@@ -228,7 +228,7 @@ Ce projet fut pour nous l'occasion de nous intéresser à plusieurs aspects.
 
 Dans un premier temps, il fallait se fixer une architecture générale pour le projet. L'organisation en différents modules s'est révélée efficace.
 
-Ensuite, le projet a soulevé des questions d'ordre algorithmiques (algorithmes de remplissage par exemple). Nous ne nous sommes que peu intéressé à la question de la complexité (seulement pour la mise à jour de plateau), cela ne nous semblait pas essentiel : chacune des stratégies peut être lancée une centine de fois dans un temps raisonnable (moins d'une minute). La conception de stratégies fut une partie importante de notre projet.
+Ensuite, le projet a soulevé des questions d'ordre algorithmiques (algorithmes de remplissage par exemple). Nous ne nous sommes que peu intéressé à la question de la complexité (seulement pour la mise à jour de plateau), cela ne nous semblait pas essentiel : chacune des stratégies peut être lancée une centaine de fois dans un temps raisonnable (moins d'une minute). La conception de stratégies fut une partie importante de notre projet.
 
 Ce fut également l'occasion de s'intéresser à l'ordre supérieur en C.
 
