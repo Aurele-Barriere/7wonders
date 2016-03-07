@@ -26,5 +26,7 @@ char starve(char player);
 /** Given a function to maximize, chooses the best letter */
 char maximize(int (*f) (char *, char), char player);
 
+/** Maximizes score + frontier */
+char greedymony(char player);
 
 #endif

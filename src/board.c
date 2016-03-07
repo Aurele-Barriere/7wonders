@@ -216,7 +216,12 @@ int available(char* b, char color) {
 return av;
 }
 
-
+//space that is guaranteed for you
 int personal_space(char * b, char color) {
   return ((BOARD_SIZE*BOARD_SIZE) - available(b, other(color)));
+}
+
+//mixing score and frontier
+int mix(char * b, char color) {
+  return score(b,color) + frontier(b,color);
 }

@@ -46,5 +46,7 @@ int available (char * b, char color);
 /** Personal space to maximize */
 int personal_space (char * b, char color);
 
+/** Mixing score and frontier */
+int mix(char * b, char color);
 
 #endif

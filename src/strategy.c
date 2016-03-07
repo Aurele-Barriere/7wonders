@@ -147,14 +147,22 @@ char maximize(int (*f) (char *, char), char player) {
   return choice;
 }
 
+// maximizes score
 char greedy(char player) {
   return maximize(score, player);
 }
 
+// maximizes frontier
 char hegemony(char player) {
   return maximize(frontier, player);
 }
 
+// maximizes guaranteed space
 char starve(char player) {
   return maximize(personal_space, player);
+}
+
+//maximizes score + frontier
+char greedymony(char player) {
+  return maximize(mix, player);
 }
