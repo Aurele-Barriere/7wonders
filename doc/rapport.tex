@@ -22,12 +22,12 @@
 \newpage
 
 \sec{Intoduction}
-Nous présentons dans ce projet une implémentation du jeu des 7 couleurs dont les règles seront décrites plus bas. L'enjeu est d'implémenter en C le jeu, puis de créer des stratégies.
-Nous proposerons une implémentation organisée, puis différentes stratégies pour jouer. Enfin, nous comparerons ces stratégies en les faisant s'affronter sur des grilles aléatoires.
+Nous présentons dans ce projet une implémentation du jeu des 7 couleurs dont les règles seront décrites plus bas. L'enjeu est d'implémenter en C le jeu, puis de créer des intelligences artificielles basées sur différentes stratégies pour y jouer.
+Nous proposerons une implémentation organisée, puis différentes stratégies. Enfin, nous comparerons ces stratégies en les faisant s'affronter sur des grilles aléatoires.
 
 
 \question{Règles du jeu}
-Le jeu se présente comme un tableau carré de 30 case de côté (ce nombre est paramétrable dans notre implémentatoin). Initialement, il est rempli aléatoirement avec 7 ``couleurs'' (ou lettres). Dans deux angles opposés, il y a une huitième et une neuvième couleurs : celles des joueurs. Tour à tour, les joueurs choisissent une couleur parmi les 7. Toutes les cases de cette couleur et adjacente à la couleur du joueur (ou adjacente à une case qui vient de changer de couleur à ce tour par cette méthode) prennent désormais la couleur du joueur. Le but est de posséder plus de la moitié du plateau.
+Le jeu se présente comme un tableau carré de trente cases de côté (ce nombre est tout à fait arbitraire et paramétrable dans notre implémentation). Initialement, il est rempli aléaoirement avec sept ``couleurs'' (ou lettres). Dans deux angles opposés, il y a une huitième et une neuvième couleurs : celles des joueurs. Tour à tour, les joueurs choisissent une couleur parmi les sept premières. Toutes les cases de cette couleur et adjacente à la couleur du joueur (ou adjacente à une case qui vient de changer de couleur à ce tour par cette méthode) prennent désormais la couleur du joueur. Le but est de posséder plus de la moitié du plateau.
 
 \sec{Organisation du projet}
 Le projet est découpé de la manière suivante :
@@ -35,13 +35,13 @@ Le projet est découpé de la manière suivante :
 Dans un fichier header \texttt{defines.h}, on déclare les constantes pour le jeu : taille du plateau, nombre de couleurs, couleurs des joueurs. Ce fichier sera à inclure dans tous les fichiers utilisant ces constantes.
 L'avantage est de pouvoir utiliser ces constantes dans tout fichier. Il faut cependant recompiler d'autres fichiers lorsqu'on change celui-ci. Ainsi, les variables globales qui sont susceptibles de changer seront déclarées globalement ailleurs.
 
-Dans un fichier \texttt{board.c}, accompagné de son header \texttt{board.h}, on déclarera globalement les plateaux (le plateau réel, et un autre utilisé pour simuler des coups). On mettra également toutes les fonctions nécessaires à manipuler ces tableaux : \texttt{set, get} pour manipuler les valeurs, \texttt{update\_board} pour mettre à jour un plateau après un coup, ainsi que les calculs de score ou de frontières par exemple.
+Dans un fichier \texttt{board.c}, accompagné de son header \texttt{board.h}, on déclarera globalement les plateaux (le plateau réel, et un autre utilisé pour simuler des coups). On mettra également toutes les fonctions nécessaires à manipuler ces tableaux : \texttt{set, get} pour manipuler les valeurs, \texttt{update\_board} pour mettre à jour un plateau après un coup, ainsi que les calculs de score ou de frontière par exemple.
 
-Dans un fichier \texttt{strategy.c}, accompagné de son module \texttt{strategy.h}, on déclare toutes les fonction qui prennent en argument un joueur, et retournent le coup à jouer en suivant une certaine stratégie : aléatoire, gloutonne, hégémonique...
+Dans un fichier \texttt{strategy.c}, accompagné de son header \texttt{strategy.h}, on déclare toutes les fonctions qui prennent en argument un joueur, et retournent le coup à jouer en suivant une certaine stratégie : aléatoire, gloutonne, hégémonique...
 
-Enfin, dans un fichier \texttt{7colors.c}, on créera la fonction de jeu, et une fonction principale qui l'appelle un certain nombre de fois.
+Enfin, dans un fichier \texttt{7colors.c}, on dispose de la fonction de jeu, et une fonction principale qui l'appelle un certain nombre de fois.
 
-\paragraph{Remarque :} Nous avons choisi de ne pas redéfinir de types. En effet, nous aurions pu utiliser des structures pour les couleurs, les plateaux et les joueurs. Mais finalement, chacune d'entre elle ne demande rien de plus que le type de base utilisé : une couleur n'est rien de plus qu'un \texttt{char} (on affiche des lettres), un joueur n'est rien de plu qu'une autre couleur, et un plateau n'est qu'une matrice de couleurs (un vecteur de vecteurs de \texttt{char}). Renommer ces types est finalement moins intuitif que les utiliser ainsi.
+\paragraph{Remarque :} Nous avons choisi de ne pas redéfinir de types. En effet, nous aurions pu utiliser des structures pour les couleurs, les plateaux et les joueurs. Mais finalement, chacune d'entre elle ne demande rien de plus que le type de base utilisé : une couleur n'est rien de plus qu'un \texttt{char} (on affiche des lettres), un joueur n'est rien de plus qu'une autre couleur, et un plateau n'est qu'une matrice de couleurs (un vecteur de vecteurs de \texttt{char}). Renommer ces types est finalement moins intuitif que les utiliser ainsi.
 
 
 
@@ -51,20 +51,20 @@ Pour initialiser le tableau de manière aléatoire, on parcourt la matrice (init
 
 Pour obtenir ce nombre, on importe le module \texttt{stdlib}, on initialise le générateur pseudo-aléatoire avec le temps (\texttt{srand(time(NULL));}) et on prend le résultat de la fonction \texttt{rand()} modulo le nombre de couleurs.
 
-Cependant, il faut bien initialiser l'aléatoire au début de la fonction principale, et pas à chaque partie. En effet, dans la suite on lancera plein de parties en même temps, qui seront donc identiques si lancées à moins d'une seconde d'intervalle.
+Cependant, il faut bien initialiser l'aléatoire au début de la fonction principale, et pas à chaque partie. En effet, dans la suite on lancera de nombreuses parties en même temps, qui seront donc identiques si lancées à moins d'une seconde d'intervalle.
 
 Enfin, \texttt{rand()} modulo un nombre de couleurs ne produit pas un résultat avec une probabilité parfaitement uniforme, si le nombre d'entiers accessibles par \texttt{rand()} n'est pas un multiple du nombre de couleurs. En effet, soit $d$ le nombre de couleurs. Si par exemple $k\times d - 1$ couleurs sont accessibles par \texttt{rand()}, on aura $k$ entiers dont le résultat du modulo donne 0, mais seulment $k-1$ dont le résultat donne $d-1$.
-Cependant, vu le petit nombre de couleurs et le grand dombre d'entiers accessibles avec \texttt{rand()}, ce n'est pas un problème significatif.
+Cependant, au vu du faible nombre de couleurs et du nombre important d'entiers accessibles avec \texttt{rand()}, il ne s'agit pas ici d'un problème significatif.
 
 \question{2.2}
-On créée une fonction \texttt{void update\_board(char player, char color, char * b)}. Elle prend en argument un joueur \texttt{player}, une couleur jouée \texttt{color} et un plateau \texttt{b}.
+On crée une fonction \texttt{void update\_board(char player, char color, char * b)}. Elle prend en argument un joueur \texttt{player}, une couleur jouée \texttt{color} et un plateau \texttt{b}.
 
 Elle consiste à parcourir la matrice, et si on trouve une case qui est de la couleur jouée et à côté d'une case de la couleur du joueur, on la remplace et on indique dans une variable qu'il y a eu un changement.
 S'il y a eu changement, il faut recommencer le parcours de la matrice.
 
 On pose $n$ la taille du tableau. Dans le pire cas, il faut réappliquer $n^2$ fois le parcours de matrice : à chaque parcours, il y a un changement. On a donc une complexité en $\mathcal{O}(n^4)$ dans le pire cas.
 
-Montrons qu'il y a des fois où on doit réappliquer le parcours $\mathcal{O}(n^2)$ fois :
+Montrons que dans certains cas on doit réappliquer le parcours $\mathcal{O}(n^2)$ fois :
 
 Dans le cas d'un serpent (voir \textsc{Figure }\ref{serpent}), si on applique l'algorithme depuis la case en bas à droite, chaque itération ne va colorier qu'une seule nouvelle case, puis se rappeler. Il va donc y avoir autant d'appels récursifs que de cases à colorier. Ce nombre de cases est un $\mathcal{O}(n^2)$ : environ la moitié de la matrice.
 
@@ -89,16 +89,16 @@ On aurait ainsi pu réduire la complexité au pire à du $\mathcal{O}(n^2)$.
 
 \sec{À la conquête du monde}
 \question{3.1}
-On crée donc une fonction \texttt{player\_choice}, qui demande à un joueur un caractère correspondant à une couleur. Si le caractère ne correspond pas à une de couleurs disponibles, on redemande jusqu'à obtenir un résultat convenable.
+On crée donc une fonction \texttt{player\_choice}, qui demande à un joueur un caractère correspondant à une couleur. Si le caractère ne correspond pas à une des couleurs disponibles, on redemande jusqu'à obtenir un résultat convenable.
 
-Nous n'avons pas ajouté de couleurs ou d'interface graphique. Il aurait été possible d'ajouter de la couleur dans les fonctions \texttt{printf} de \texttt{print\_board} avec les codes couleurs ANSI. Mais il aurait fallu définir la couleur de chaque caractère. Dans notre programme, si on veut ajouter des couleurs, il n'y a qu'à modifer le \texttt{\#define NB\_COLORS} et le programme utilisera tout seul les prochaines lettres de l'alphabet.
+Nous n'avons pas ajouté de couleurs ou d'interface graphique. Il aurait été possible d'ajouter de la couleurs dans les fonctions \texttt{printf} de \texttt{print\_board} avec les codes couleurs ANSI. Mais il aurait fallu définir la couleur de chaque caractère. Dans notre programme, si on veut ajouter des couleurs, il n'y a qu'à modifer le \texttt{\#define NB\_COLORS} et le programme utilisera tout seul les prochaines lettres de l'alphabet.
 
 %limites? qu'est ce qu'il va pas elle pas belle ma fonction?
 
 \question{3.2}
 On implémente la fonction \texttt{int score (char * b, int color)} qui prend en argument un plateau de jeu et la couleur d'un joueur. Elle se contente de compter le nombre de cases de cette couleur pour calculer le score d'un joueur.
 
-On calcule la limite de score à atteindre : si $n$ est la taille du plateau, on prend $\frac{n^2}{2}$ (arrondi à la valeur inférieure : cela ne pose pas de problème, dans le cas d'un plateau avec un nombre de cases impaires, il ne peut pas y avoir d'égalité).
+On calcule la limite de score à atteindre : si $n$ est la taille du plateau, on prend $\frac{n^2}{2}$ (arrondi à la valeur supérieure).
 
 Grâce à cette fonction, on peut donc vérifier à chaque tour si :
 \begin{itemize}
@@ -107,7 +107,7 @@ Grâce à cette fonction, on peut donc vérifier à chaque tour si :
 \end{itemize}
 
 Ainsi, on peut mettre des conditions d'arrêt au jeu.
-On peut également calculer le pourcentage en calculant $\frac{score \times 100}{n^2}$.
+On peut également calculer le pourcentage du plateau possédé par un joueur en calculant $\frac{score \times 100}{n^2}$.
 
 \sec{La stratégie de l'aléa}
 \question{4.1}
@@ -116,7 +116,7 @@ Dans les fichiers de stratégies (\texttt{strategy.c, strategy.h}), on implémen
 \question{4.2}
 On implémente une fonction \texttt{char alea\_useful\_colors(int player)} qui va opérer ainsi :
 
-On initialise un tableau de la taille du nombre de couleurs, initialisé avec des 0. Il contiendra des booléens qui spécifieront si une couleur est utile ou non.
+On initialise avec des 0 un tableau de la taille du nombre de couleurs. Il contiendra des booléens qui spécifieront si une couleur est utile ou non.
 
 On parcourt le plateau de jeu. Si on tombe sur une couleur à côté d'une case occupée par le joueur, dans le tableau précédent on indiquera que cette couleur est utile (c'est à dire que le joueur progressera s'il la joue).
 
@@ -135,16 +135,16 @@ Enfin, on cherche l'indice maximum de ce tableau : c'est la couleur à jouer.
 \question{5.2}
 Pour qu'un affrontement soit équitable, il faut alterner le premier joueur. En effet, commencer donne un avantage (pour s'en convaincre, s'imaginer le jeu à 1 ou 2 couleurs ou encore lancer des compétitions utilisant la même stratégie). On va tirer aléatoirement le premier joueur. Avec un grand nombre de parties, on devrait tendre vers un résultat équitable.
 
-Le côté est également important. On va donc générer seulement la moitié de la matrice, puis la répliquer. La matrice est donc symétrique suivant la diagonale qui ne contient pas les positions initiales des joueurs.
+Le côté où l'on commence est également important. On va donc générer seulement la moitié du plateau, puis le répliquer. Le plateau est donc symétrique suivant la diagonale qui ne contient pas les positions initiales des joueurs.
 
 On aurait également pu faire pour chaque match le match retour, où on inverse le côté et le premier joueur.
 
 \question{5.3}
-On a fait s'affronter en 100 parties le joueur aléatoire et le joueur \texttt{greedy}.
+On a fait s'affronter en cent parties le joueur aléatoire et le joueur \texttt{greedy}.
 
 Le joueur \texttt{greedy} les a toutes remportées.
 
-Ensuite, on fait s'affronter en 100 parties le joueur \texttt{alea\_useful} et le joueur \texttt{greedy}.
+Ensuite, on fait s'affronter en cent parties le joueur \texttt{alea\_useful} et le joueur \texttt{greedy}.
 
 Le joueur \texttt{greedy} les a toutes remportées.
 
@@ -163,34 +163,34 @@ On implémente donc la fonction \texttt{hegemony} de la même manière que le gl
 
 
 \paragraph{Évaluation :}
-Pour évaluer cette stratégie, on la fait s'affronter 1000 fois contre \texttt{greedy}.
+Pour évaluer cette stratégie, on la fait jouer 1000 fois contre \texttt{greedy}.
 
-\texttt{greedy} gagne 996 fois. \texttt{hegemony} gagne 4 fois.
+\texttt{greedy} gagne 996 fois, \texttt{hegemony} gagne 4 fois.
 
 \question{Bonus : stratégie \texttt{starve}}
 
-Devant l'échec d'\texttt{hegemony} malgré ce qui nous semblait une bonne idée, à savoir chercher à s'étendre au maximum pour ``affamer'' l'adversaire en l'empêchant d'accéder à certaines cases qui sont alors garanties de nous revenir, nous avons cherché à mettre au point une nouvelle stratégie. L'idée est de chercher à maximiser non pas sa frontière ou son score mais l'``espace personnel'', à savoir l'ensemble des cases inaccessibles par l'adversaire. Pour cela, on définit une fonction \texttt{available} qui calcule le nombre de cases accessibles pour un joueur. Il s'agit d'appliquer un algorithme de remplissage : à l'initialisation, seules les cases possédées sont accessibles, on re-parcourt ensuite tant que nécessaire l'ensemble des cases pour ajouter aux cases accessibles les cases non possédées par l'adversaire et dont un voisin est accessible, et ce jusqu'à stabilisation. On calcule ensuite l'espace personnel d'un joueur comme le nombre total de cases auquel on retire le nombre de cases accessibles par l'adversaire. La stratégie \texttt{starve} consiste enfin à maximiser cet espace personnel de la même manière que \texttt{greedy} maximise le score du joueur.
+Devant l'échec d'\texttt{hegemony} malgré ce qui nous semblait une bonne idée, à savoir chercher à s'étendre au maximum pour ``affamer'' l'adversaire en l'empêchant d'accéder à certaines cases qui sont alors garanties de nous revenir, nous avons cherché à mettre au point une nouvelle stratégie. L'idée est de chercher à maximiser non pas sa frontière ou son score mais l'``espace personnel'', à savoir l'ensemble des cases inaccessibles par l'adversaire. Pour cela, on définit une fonction \texttt{available} qui calcule le nombre de cases accessibles pour un joueur. Il s'agit d'appliquer un algorithme de remplissage : à l'initialisation, seule les cases possédées sont accessibles, on re-parcourt ensuite tant que nécessaire l'ensemble des cases pour ajouter au cases accessibles les cases non possédées par l'adversaire et dont un voisin est accessible, et ce jusqu'à stabilisation. On calcule ensuite l'espace personnel d'un joueur comme le nombre total de cases auquel on retire le nombre de cases accessibles par l'adversaire. La stratégie \texttt{starve} consiste enfin à maximiser cet espace personnel de la même manière que \texttt{greedy} maximise le score du joueur.
 
 \sec{Stratégie générale}
-On constate que les implémentations de \texttt{starve} ou \texttt{hegemony} ressemblent fortement à celle de \texttt{greedy} : il suffit de changer la fonction à maximiser. Avec l'ordre supérieur, on peut avoir une fonction qui prend en argument une fonction à maximiser et renvoie la couleur à jouer pour maximiser cette fonction (\texttt{score} pour \texttt{greedy} et \texttt{frontier} pour \texttt{hegemony} par exemple). Il faut de plus que cette fonction ne choisisse que parmi les couleurs utiles (qui font avancer le score du joueur lorsque c'est possible), pour se garantir de la terminaison d'une partie.
+On constate que les implémentations de \texttt{starve} ou \texttt{hegemony} ressemblent fortement à celle de \texttt{greedy} : il suffit de changer la fonction à maximiser. Avec l'ordre supérieur, on peut avoir une fonction qui prend en argument une fonction à maximiser et renvoie la couleur à jouer pour maximiser cette fonction (\texttt{score} pour \texttt{greedy} et \texttt{frontier} pour \texttt{hegemony} par exemple). Il faut de plus que cette fonction ne choisisse que parmi les couleurs utiles (qui font avancer le score du joueur lorsque c'est possible), pour garantir la terminaison d'une partie.
 
-On implémente donc la fonction \texttt{char maximize(int (*f) (char *, char), char player)}. Elle prend en argument une fonction à maximiser (\texttt{score}, \texttt{frontier} ou \texttt{personal\_space}) et un joueur et renvoie la lettre à jouer.
+On implémente donc la fonction \texttt{char general(int (*f) (char *, char), char player)}. Elle prend en argument une fonction à maximiser (\texttt{score}, \texttt{frontier} ou \texttt{personal\_space}) et un joueur et renvoie la couleur à jouer.
 
-Implémenter une stratégie se fait dès lors en 1 ligne :\\
-\texttt{char greedy(char player) \{ return maximize(score, player); \}}
+Implémenter une stratégie se fait dès lors en une ligne :\\
+\texttt{char general\_greedy(char player) \{ return general(score, player); \}}
 
 
 \sec{Le pire du monde merveilleux des 7 couleurs}
 \question{7.2}
 On implémente la stratégie hybride \texttt{greedymony}. Il s'agit pour elle de maximiser la somme du score et de la frontière. Elle bat toutes les stratégies implémentées jusqu'à présent.
 
-En effet, le problème de \texttt{hegemony} est à la fin du jeu : toutes les zones entourées par notre couleur mais qui ne sont pas de notre couleur ne seront pas coloriées. En effet, les colorier réduirait notre zone, alors qu'on a intérêt à les prendre.
+En effet, le problème de \texttt{hegemony} est à la fin du jeu : toutes les zones entourées par notre couleur mais qui ne sont pas de notre couleur ne seront pas coloriées. Les colorier réduirait notre frontière, alors qu'on a intérêt à les prendre.
 
-Et le problème de \texttt{greedy} est qu'il favorise souvent la prise de cases qui ne lui permettent pas de gagner par rapport à son adversaire puisqu'elles lui étaient déjà inaccessibles.
+Le problème de \texttt{greedy}, lui, est de souvent favoriser la prise de cases qui ne lui permettent pas de gagner par rapport à son adversaire puisqu'elles lui étaient déjà inaccessibles.
 
 La combinaison des deux est donc particulièrement efficace.
 
-Si on fait un mélange entre \texttt{hegemony} et \texttt{starve}, on n'obtient pas une stratégie aussi forte : on accorde trop d'intérêt aux zones qui ne sont pas de notre couleurs mais entourées par notre couleur puisqu'elles augmentent beaucoup la frontière et la zone personnelle, et ne seront donc jamais coloriées.
+Si on fait un mélange entre \texttt{hegemony} et \texttt{starve}, on n'obtient pas une stratégie aussi forte : on accorde trop d'intérêt aux zones qui ne sont pas de notre couleur mais entourées par notre couleur puisqu'elles augmentent beaucoup la frontière et la zone personnelle, et ne seront donc jamais coloriées.
 
 \sec{Tournois}
 Dans cette section, nous comparons les différentes stratégies en organisant des tournois de cent parties entre chaque paire de stratégies.Les parties sont jouées avec un terrain symétrique et un choix aléatoire du premier joueur pour garantir une équité maximale.\\
@@ -215,7 +215,7 @@ strategie VS & \texttt{alea} & \texttt{alea\_useful} & \texttt{greedy} & \texttt
 
 On constate que \texttt{greedymony} est la meilleure stratégie.
 
-Ensuite, \texttt{starve} est la seconde meilleure stratégie (elle gagne même contre \texttt{greedy} 68 à 31, et gagne 100 à 0 contre toutes les autres sauf \texttt{greedymony}).
+Ensuite, \texttt{starve} est la seconde meilleure stratégie (elle gagne contre \texttt{greedy} 68 à 31, et gagne 100 à 0 contre toutes les autres sauf \texttt{greedymony}).
 
 Ensuite, \texttt{greedy} ne laisse gagner personne d'autre que \texttt{starve} et \texttt{greedymony}.
 
@@ -224,13 +224,13 @@ Ensuite, \texttt{greedy} ne laisse gagner personne d'autre que \texttt{starve} e
 Enfin, la stratégie \texttt{alea} n'est vraiment pas efficace et perd presque tout le temps.
 
 \sec{Synthèse}
-Ce projet fut pour nous l'occasion de nous intéresser à plusieurs choses.
+Ce projet fut pour nous l'occasion de nous intéresser à plusieurs aspects.
 
 Dans un premier temps, il fallait se fixer une architecture générale pour le projet. L'organisation en différents modules s'est révélée efficace.
 
-Ensuite, le projet a soulevé des questions d'ordre algorithmiques (algorithmes de remplissage par exemple). Nous ne nous sommes que peu intéressé à la question de la complexité (seulement pour la mise à jour de plateau), cela ne nous semblait pas essentiel : chacune des stratégies peut être lancée une centaine de fois dans un temps raisonnable (moins d'une minute). La conception de stratégies fut une partie importante de notre projet.
+Ensuite, le projet a soulevé des questions d'ordre algorithmiques (algorithmes de remplissage par exemple). Nous ne nous sommes que peu intéressé à la question de la complexité (seulement pour la mise à jour de plateau), cela ne nous semblait pas essentiel : chacune des stratégies peut être lancée une centine de fois dans un temps raisonnable (moins d'une minute). La conception de stratégies fut une partie importante de notre projet.
 
-Cela fut également l'occasion de s'intéresser à l'ordre supérieur en C.
+Ce fut également l'occasion de s'intéresser à l'ordre supérieur en C.
 
 
 
