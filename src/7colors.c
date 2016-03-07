@@ -104,9 +104,9 @@ int main()
   switch (choice2) {
   case 1: strat2 = alea; break;
   case 2: strat2 = alea_useful_colors; break;
-  case 3: strat2 = general_greedy; break;
-  case 4: strat2 = general_hegemony; break;
-  case 5: strat2 = general_starve; break;
+  case 3: strat2 = greedy; break;
+  case 4: strat2 = hegemony; break;
+  case 5: strat2 = starve; break;
   default : strat2 = player_choice; printing = 1; 
   }
   

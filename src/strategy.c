@@ -83,28 +83,6 @@ char wrong_greedy(char player) {
   return letter;
 }
 
-//true greedy ai
-char greedy(char player) {
-  int i =0;
-  int val[NB_COLORS] = { 0 };
-  for (i = 0; i< NB_COLORS; i++) {
-    copy_board();
-    update_board(player, i, test_board);
-    val[i] = score(test_board, player);
-  }
-
-  int max = 0;
-  char choice = 0;
-  for (i=0; i<NB_COLORS; i++) {
-    if (val[i]>=max) {
-      max = val[i];
-      choice = i;
-    }
-  }
-  if(printing){printf("color chose by true greedy AI : %c\n", choice +97);}
-  return choice;
-}
-
 //ask for the player's choice
 char player_choice(char player) {
   char c;
@@ -118,111 +96,10 @@ char player_choice(char player) {
   else {return player_choice(player);}
 }
 
-//max frontier
-char hegemony(char player) {
-  int i =0;
-  int j =0;
-  char color;
-  int c;
-  int val[NB_COLORS] = { 0 };
-  for (i = 0; i< NB_COLORS; i++) {
-    copy_board();
-    update_board(player, i, test_board);
-    val[i] = frontier(test_board, player);
-  }
-  //choosing only from useful colors
-  int useful[NB_COLORS] = { 0 };
-
-  for (i = 0; i< BOARD_SIZE; i++) {
-    for (j = 0; j< BOARD_SIZE; j++) {
-      color = get_cell(i,j,board);
-      if (color>=0 && color < NB_COLORS) {
-	c = (int) color;
-	if (useful[c]==0) {
-	  if (in_board(i-1,j)) {if (get_cell(i-1,j,board) == player)  {useful[c] = 1;}}
-	  if (in_board(i+1,j)) {if (get_cell(i+1,j,board) == player)  {useful[c] = 1;}}
-	  if (in_board(i,j-1)) {if (get_cell(i,j-1,board) == player)  {useful[c] = 1;}}
-	  if (in_board(i,j+1)) {if (get_cell(i,j+1,board) == player)  {useful[c] = 1;}}
-	}
-      }
-    }
-  }
-
-  //removing useless colors
-
-  for (i=0; i<NB_COLORS; i++) {
-    val[i] *= useful[i];
-  }
-
-  //now getting the max out of it
-  int max = 0;
-  char choice = 0;
-  for (i=0; i<NB_COLORS; i++) {
-    if (val[i]>=max) {
-      max = val[i];
-      choice = i;
-    }
-  }
-  if(printing){printf("color chosen by hegemony AI : %c\n", choice +97);}
-  return choice;
-}
-
-// starve strategy : minimize available space of the other player
-char starve(char player) {
-  int i =0;
-  int j =0;
-  int val[NB_COLORS] = { 0 };
-  char color;
-  int c;
-  int useful[NB_COLORS] = { 0 };
-
-  for (i = 0; i< NB_COLORS; i++) {
-    copy_board();
-    update_board(player, i, test_board);
-    val[i] = available(test_board, other(player));
-  }
-
-  //choosing only from useful colors
-  
-
-  for (i = 0; i< BOARD_SIZE; i++) {
-    for (j = 0; j< BOARD_SIZE; j++) {
-      color = get_cell(i,j,board);
-      if (color>=0 && color < NB_COLORS) {
-	c = (int) color;
-	if (useful[c]==0) {
-	  if (in_board(i-1,j)) {if (get_cell(i-1,j,board) == player)  {useful[c] = 1;}}
-	  if (in_board(i+1,j)) {if (get_cell(i+1,j,board) == player)  {useful[c] = 1;}}
-	  if (in_board(i,j-1)) {if (get_cell(i,j-1,board) == player)  {useful[c] = 1;}}
-	  if (in_board(i,j+1)) {if (get_cell(i,j+1,board) == player)  {useful[c] = 1;}}
-	}
-      }
-    }
-  }
-
-  //removing useless colors
-
-  for (i=0; i<NB_COLORS; i++) {
-    if (!useful[i]) {val[i] = BOARD_SIZE*BOARD_SIZE;}
-  }
-
-
-  //now getting the min
-  int min = BOARD_SIZE*BOARD_SIZE;
-  char choice = 0;
-  for (i=0; i<NB_COLORS; i++) {
-    if (val[i]<=min) {
-      min = val[i];
-      choice = i;
-    }
-  }
-  if(printing){printf("color chosen by starve AI : %c\n", choice +97);}
-  return choice;
-}
 
 
 //general strategy : takes a function f to maximize
-char general(int (*f) (char *, char), char player) {
+char maximize(int (*f) (char *, char), char player) {
   int i =0;
   int j =0;
   char color;
@@ -270,14 +147,14 @@ char general(int (*f) (char *, char), char player) {
   return choice;
 }
 
-char general_greedy(char player) {
-  return general(score, player);
+char greedy(char player) {
+  return maximize(score, player);
 }
 
-char general_hegemony(char player) {
-  return general(frontier, player);
+char hegemony(char player) {
+  return maximize(frontier, player);
 }
 
-char general_starve(char player) {
-  return general(personal_space, player);
+char starve(char player) {
+  return maximize(personal_space, player);
 }
