@@ -49,7 +49,7 @@ int game(char (*strat1)(char), char (*strat2)(char)) {
      else {choice = strat1(color1);}
      if (player) {update_board(color2, choice, board);}
      else {update_board(color1, choice, board);}
-     player = 1-player;
+     player = 1-player; //changing player
      score1 = score(board,color1);
      score2 = score(board,color2);
      if(printing){printf("Score 1 : %d%%\tScore 2 : %d%%\n",score1*100/(BOARD_SIZE*BOARD_SIZE),score2*100/(BOARD_SIZE*BOARD_SIZE));}
