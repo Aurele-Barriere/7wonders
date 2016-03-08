@@ -200,6 +200,8 @@ La combinaison des deux est donc particulièrement efficace.
 
 Si on fait un mélange entre \texttt{hegemony} et \texttt{starve}, on n'obtient pas une stratégie aussi forte : on accorde trop d'intérêt aux zones qui ne sont pas de notre couleur mais entourées par notre couleur puisqu'elles augmentent beaucoup la frontière et la zone personnelle, et ne seront donc jamais coloriées.
 
+De même, un mélange entre \texttt{greedy} et \texttt{starve} n'est pas très intéressant, dans la mesure où le score actuel est déjà compris dans l'espace personnel : cela favoriserait fortement les couleurs qui augmentent le score en plus de l'espace personnel, or l'intérêt de \texttt{starve} est justement de faire perdre de l'intérêt à ces couleurs qui nous permettent de gagner des cases qui nous sont déjà garanties. 
+
 \sec{Tournois}
 Dans cette section, nous comparons les différentes stratégies en organisant des tournois de cent parties entre chaque paire de stratégies.Les parties sont jouées avec un terrain symétrique et un choix aléatoire du premier joueur pour garantir une équité maximale.\\
 
